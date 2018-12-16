@@ -1,0 +1,42 @@
+{
+    "name": "frohlfing/laravel-package-skeleton",
+    "description": "Package Skeleton for Laravel 5",
+    "keywords": ["laravel", "package", "development"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Frank Rohlfing",
+            "email": "mail@frank-rohlfing.de"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "illuminate/support": "5.6.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "orchestra/testbench": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "FRohlfing\\PackageSkeleton\\": "src/"
+        },
+        "files": [
+            "helpers/package-skeleton.php"
+        ]
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "FRohlfing\\PackageSkeleton\\PackageSkeletonServiceProvider"
+            ],
+            "aliases": {
+                "PackageSkeletonServiceAlias": "FRohlfing\\PackageSkeleton\\Facades\\PackageSkeletonService"
+            }
+        }
+    }
+}
