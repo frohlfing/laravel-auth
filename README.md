@@ -1,10 +1,19 @@
-# Package Skeleton for Laravel 5
+# Extension of the User authentication for Laravel 5
 
-This package provides following features:
+This package provides following features: 
+ - Registration with email verification
+ - Reset password with email verification
+ - Change password
+ - User account administration
+ - User roles
+ - Access control list
+ - API-token
+ - Rate limit
+ - User profile
+ - Login either by e-mail or username (configurable)
+ - Logout
 
-- Only a skeleton for a package for Laravel 5
-
-![Screenshot](https://raw.githubusercontent.com/frohlfing/app/master/resources/docs/package-skeleton.png)     
+![Screenshot](https://raw.githubusercontent.com/frohlfing/app/master/resources/docs/screenshot-auth.png)     
 
 ## Installation
     
@@ -14,31 +23,31 @@ Composer where the package is. To do this, add the following lines into your `co
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/frohlfing/laravel-package-skeleton.git"
+            "url": "https://github.com/frohlfing/laravel-auth.git"
         }
     ],
 
 Download this package by running the following command:
 
-    composer require frohlfing/laravel-package-skeleton:1.0.*@dev
+    composer require frohlfing/laravel-auth:1.0.*@dev
 
-You need to publish the config file for this package. This will add the file `config/package-skeleton.php`, where you 
-can configure this package:
+You need to publish the config file for this package. This will add the file `config/auth.php`, where you can configure 
+this package:
 
-    php artisan vendor:publish --provider="FRohlfing\PackageSkeleton\PackageSkeletonServiceProvider" --tag=config
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=config
 
 In order to edit the default templates, the views must be published as well. The views will then be placed in 
-`resources/views/vendor/usermanagement`.
+`resources/views/vendor/auth`.
 
-    php artisan vendor:publish --provider="FRohlfing\PackageSkeleton\PackageSkeletonServiceProvider" --tag=views
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=views
 
 Publish the assets by running the following command:
 
-    php artisan vendor:publish --provider="FRohlfing\PackageSkeleton\PackageSkeletonServiceProvider" --tag=public
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=public
     
 You need to run the migrations for this package:
 
-    php artisan vendor:publish --provider="FRohlfing\PackageSkeleton\PackageSkeletonServiceProvider" --tag=migrations
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=migrations
     php artisan migrate
     
 Add menu item:    
@@ -47,4 +56,18 @@ todo
     
 ## Usage
 
-The user manual...
+todo
+
+s. https://github.com/pletfix/auth-plugin
+
+Configuration
+
+Views
+
+Web:
+Roles, ACL, can
+
+API:
+api_token
+rate_limit
+

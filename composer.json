@@ -1,7 +1,7 @@
 {
-    "name": "frohlfing/laravel-package-skeleton",
-    "description": "Package Skeleton for Laravel 5",
-    "keywords": ["laravel", "package", "development"],
+    "name": "frohlfing/laravel-auth",
+    "description": "User Management for Laravel 5",
+    "keywords": ["laravel", "admininstration", "roles", "access control list", "acl", "api-token", "profile", "login", "logout"],
     "license": "MIT",
     "authors": [
         {
@@ -19,10 +19,10 @@
     },
     "autoload": {
         "psr-4": {
-            "FRohlfing\\PackageSkeleton\\": "src/"
+            "FRohlfing\\Auth\\": "src/"
         },
         "files": [
-            "helpers/package-skeleton.php"
+            "helpers/auth.php"
         ]
     },
     "minimum-stability": "stable",
@@ -32,10 +32,10 @@
         },
         "laravel": {
             "providers": [
-                "FRohlfing\\PackageSkeleton\\PackageSkeletonServiceProvider"
+                "FRohlfing\\Auth\\AuthServiceProvider"
             ],
             "aliases": {
-                "PackageSkeletonServiceAlias": "FRohlfing\\PackageSkeleton\\Facades\\PackageSkeletonService"
+                "AuthService": "FRohlfing\\Auth\\Facades\\AuthService"
             }
         }
     }
