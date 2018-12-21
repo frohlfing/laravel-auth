@@ -1,4 +1,4 @@
-# User authentication for Laravel 5
+# User Authentication for Laravel 5
 
 This package provides following features: 
  - Registration with email verification
