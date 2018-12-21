@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('users.index.title'))
+@section('title', __('auth::management.index.title'))
 
 @section('styles')
     <style>
@@ -24,7 +24,7 @@
                 @include('_errors')
                 <div class="card">
                     <div class="card-header">
-                        {{ __('users.index.heading') }}
+                        {{ __('auth::management.index.heading') }}
                     </div>
                     <div class="card-body">
                         <div class ="row">
@@ -41,11 +41,14 @@
                             <table class="table table-hover table-striped table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>{!!sort_column('id', __('users.model.id'))!!}</th>
-                                    <th>{!!sort_column('name', __('users.model.name'))!!}</th>
-                                    <th>{!!sort_column('email', __('users.model.email'))!!}</th>
-                                    <th>{!!sort_column('role', __('users.model.role'))!!}</th>
-                                    <th>{!!sort_column('updated_at', __('users.model.updated_at'))!!}</th>
+                                    <th>{!! sort_column('id', __('auth::model.id')) !!}</th>
+                                    <th>{!! sort_column('name', __('auth::model.name')) !!}</th>
+                                    @if (config('auth.key') !== 'email')
+                                        <th>{!! sort_column('name', __('auth::model.' . config('auth.key'))) !!}</th>
+                                    @endif
+                                    <th>{!! sort_column('email', __('auth::model.email')) !!}</th>
+                                    <th>{!! sort_column('role', __('auth::model.role')) !!}</th>
+                                    <th>{!! sort_column('updated_at', __('auth::model.updated_at')) !!}</th>
                                     <th class="text-right"></th>
                                 </tr>
                                 </thead>
@@ -54,11 +57,14 @@
                                         <tr>
                                             <td>{{ $user->id }}</td>
                                             <td>{{ $user->name }}</td>
+                                            @if (config('auth.key') !== 'email')
+                                                <td>{{ $user->getAttribute(config('auth.key')) }}</td>
+                                            @endif
                                             <td>
                                                 {{ $user->email }}
                                                 @if(!$user->confirmed)
-                                                    <i class="fas fa-exclamation-circle not_confirmed-icon" title="{{ __('users.index.email_not_confirmed') }}"></i>
-                                                    <a href="{{ route('admin.users.confirm', [$user->id]) }}" data-method="PATCH" class="btn btn-link confirm-button">{{ __('users.index.confirm_button') }}</a>
+                                                    <i class="fas fa-exclamation-circle not_confirmed-icon" title="{{ __('auth::management.index.email_not_confirmed') }}"></i>
+                                                    <a href="{{ route('admin.users.confirm', [$user->id]) }}" data-method="PATCH" class="btn btn-link confirm-button">{{ __('auth::management.index.confirm_button') }}</a>
                                                 @endif
                                             </td>
                                             <td>{{ $user->role }}</td>

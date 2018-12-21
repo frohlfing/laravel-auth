@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     'title'                => 'Change Password',
     'heading'              => 'Change Password',
     'current_password'     => 'Current Password',
@@ -12,4 +13,5 @@ return [
     'successful'           => 'Your password has been changed.',
     'copied'               => 'The password has been copied to the clipboard.',
     'copy_failed'          => 'Copying failed!',
+
 ];

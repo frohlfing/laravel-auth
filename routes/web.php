@@ -92,8 +92,8 @@ if (!Route::has('profile.index')) {
 /** @noinspection PhpUndefinedMethodInspection */
 if (!Route::has('admin.users.index')) {
     Route::middleware(['can:manage-users'])->group(function () {
-        Route::get('admin/users/{user}/replicate', '\FRohlfing\Auth\Http\Controllers\UserController@replicate')->name('admin.users.replicate');
-        Route::patch('admin/users/{user}/confirm', '\FRohlfing\Auth\Http\Controllers\UserController@confirm')->name('admin.users.confirm');
-        Route::resource('admin/users', '\FRohlfing\Auth\Http\Controllers\UserController', ['as' => 'admin']);
+        Route::get('admin/users/{user}/replicate', '\FRohlfing\Auth\Http\Controllers\ManagementController@replicate')->name('admin.users.replicate');
+        Route::patch('admin/users/{user}/confirm', '\FRohlfing\Auth\Http\Controllers\ManagementController@confirm')->name('admin.users.confirm');
+        Route::resource('admin/users', '\FRohlfing\Auth\Http\Controllers\ManagementController', ['as' => 'admin']);
     });
 }

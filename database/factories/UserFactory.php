@@ -17,9 +17,8 @@ use Faker\Generator as Faker;
 $factory->define(App\User::class, function (Faker $faker) {
     $updatet_at = $faker->dateTime();
 
-    return [
+    $data = [
         'name' => $faker->name,
-        'username' => $faker->unique()->userName,
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'role' => $faker->randomElement(config('auth.roles')),
@@ -30,4 +29,11 @@ $factory->define(App\User::class, function (Faker $faker) {
         'created_at' => $faker->dateTime($updatet_at),
         'updated_at' => $updatet_at,
     ];
+
+    $key = config('auth.key');
+    if ($key !== 'email') {
+        $data[$key] = $faker->unique()->userName;
+    }
+
+    return $data;
 });

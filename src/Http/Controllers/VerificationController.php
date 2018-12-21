@@ -20,12 +20,12 @@ class VerificationController extends Controller
         /** @var User $user */
         $user = Auth::user();
 		if ($user->confirmed) {
-			return redirect()->back()->with('message', __('auth.register.email_already_verified'));
+			return redirect()->back()->with('message', __('auth::register.email_already_verified'));
 		}
 
 		send_verification_mail($user);
 
-		return redirect()->back()->with('message', __('auth.register.email_sent'));
+		return redirect()->back()->with('message', __('auth::register.email_sent'));
 	}
 
 	/**
@@ -41,7 +41,7 @@ class VerificationController extends Controller
 		/** @var User $user */
 		$user = User::whereConfirmationToken($confirmationToken)->whereEmail($email)->first();
 		if ($user === null) {
-			abort(Response::HTTP_FORBIDDEN, __('auth.register.token_invalid'));
+			abort(Response::HTTP_FORBIDDEN, __('auth::register.token_invalid'));
 		}
 
         $user->confirmation_token = null;

@@ -65,7 +65,7 @@ class ChangePasswordController extends Controller
         }
 
         if (!Hash::check($inputs['old_password'], $user->password)) {
-            return redirect()->back()->withInput()->withErrors(['old_password' => __('auth.password.password_invalid')]);
+            return redirect()->back()->withInput()->withErrors(['old_password' => __('auth::password.password_invalid')]);
         }
 
         $user->password = bcrypt($inputs['password']);

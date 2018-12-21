@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard'     => 'web',
         'passwords' => 'users',
     ],
 
@@ -37,12 +37,12 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver'   => 'session',
             'provider' => 'users',
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver'   => 'token',
             'provider' => 'users',
         ],
     ],
@@ -67,12 +67,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model'  => App\User::class,
         ],
 
         // 'users' => [
         //     'driver' => 'database',
-        //     'table' => 'users',
+        //     'table'  => 'users',
         // ],
     ],
 
@@ -94,8 +94,8 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
+            'table'    => 'password_resets',
+            'expire'   => 60,
         ],
     ],
 
@@ -115,13 +115,12 @@ return [
     | Authentication Key
     |--------------------------------------------------------------------------
     |
-    | Determine which user attribute is used by the login (usually username or
-    | email).
+    | Determine which user attribute is used by the login (default: email).
     |
     */
 
-    //'key' => 'email',
-    'key' => 'username',
+    'key' => 'email',
+    //'key' => 'username',
 
     /*
     |--------------------------------------------------------------------------
@@ -147,10 +146,49 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Login Throttling
+    |--------------------------------------------------------------------------
+    |
+    | By default, the user will not be able to login for one minute if they fail
+    | to provide the correct credentials after several attempts. The throttling
+    | is unique to the user's username / e-mail address and their IP address.
+    |
+    */
+
+    'login_throttling' => [
+        'max_attempts'  => 5,
+        'decay_minutes' => 1,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Number of Users per Page
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the maximum number of users per management page.
+    |
+    */
+
+    'per_page' => 20,
+
+    /*
+    |--------------------------------------------------------------------------
+    | API-Token
+    |--------------------------------------------------------------------------
+    |
+    | Set this option to manage the api token and api_rate_limit.
+    |
+    */
+
+    'manage_api' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Maximum Number of API Requests
     |--------------------------------------------------------------------------
     |
-    | You can set the maximum number of requests a new user can make per minute.
+    | You can set the maximum number of API requests a new user can make per
+    | minute.
     |
     */
 
@@ -184,14 +222,9 @@ return [
     */
 
     'acl' => [
-        'manage-addresses' => ['master', 'admin', 'user'],
-        'manage-all-fields' => ['master', 'admin', 'user'],
-        'manage-dummies' => ['master', 'admin', 'user'],
-        'save-comment'   => ['master', 'admin', 'user'],
-        'manage'         => ['master', 'admin'],
-        'manage-users'   => ['master', 'admin'],
-        'manage-system'  => ['master'],
-        'exec-examples'  => ['master'],
+        'manage'        => ['master', 'admin'],
+        'manage-users'  => ['master', 'admin'],
+        'manage-system' => ['master'],
     ],
 
 ];

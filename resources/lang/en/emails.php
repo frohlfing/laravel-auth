@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     'register' => [
         'subject' => 'Verify email address',
         'heading' => 'You are Welcome!',
@@ -8,6 +9,7 @@ return [
         'button'  => 'Yes, the email address is correct!',
         'contact' => 'If you have not registered, please contact us at',
     ],
+
     'reset' => [
         'subject' => 'Your password reset link',
         'heading' => 'Reset password',
@@ -15,5 +17,6 @@ return [
         'button'  => 'Reset password!',
         'contact' => 'If you have not initiated resetting the password, please contact us at',
     ],
+
 ];
 

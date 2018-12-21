@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     'title'                => 'Kennwort ändern',
     'heading'              => 'Kennwort ändern',
     'current_password'     => 'Bisheriges Kennwort',
@@ -12,4 +13,5 @@ return [
     'successful'           => 'Dein Kennwort wurde geändert.',
     'copied'               => 'Das Kennwort wurde in die Zwischenablage kopiert.',
     'copy_failed'          => 'Kopieren fehlgeschlagen!',
+
 ];

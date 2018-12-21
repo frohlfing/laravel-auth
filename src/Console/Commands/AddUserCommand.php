@@ -35,13 +35,7 @@ class AddUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'user:add 
-                            { name            : Display Name }
-                            { password        : Password }
-                            { --m|email=      : E-Mail (default: name@local}
-                            { --r|role=       : User role }
-                            { --t|api_token=  : API token }
-                            { --l|rate_limit= : Rate Limit }';
+    protected $signature = 'user:add';
 
     /**
      * The console command description.
@@ -55,6 +49,18 @@ class AddUserCommand extends Command
      */
     public function __construct()
     {
+        $key = config('auth.key');
+        $keyLabel = $key !== 'email' ? __("users.model.{$key}", [], 'en') : 'E-Mail Address';
+
+        $this->signature .= '
+            { ' . $key . ' : ' . $keyLabel . ' } 
+            { password : Password }
+            { --d|name= : Display Name (default: <' . $key . '>) }
+            ' . ($key !== 'email' ? '{ --m|email= : E-Mail Address (default: <' . $key . '>@local) }' : '') . '
+            { --r|role= : User role (default: ' . config('auth.roles.0') . ') }
+            { --t|api_token= : API token (default: generated string) }
+            { --l|rate_limit= : Rate Limit (default: ' . config('api.rate_limit') . ') }';
+
         //$this->signature = str_replace(' name : Display Name', ' email2 : E-Mail', $this->signature);
 
         parent::__construct();
@@ -68,12 +74,16 @@ class AddUserCommand extends Command
     public function handle()
     {
         $data = array_merge($this->arguments(), $this->options());
+        $key = config('auth.key');
 
         try {
             $user = new User;
-            $user->name       = $data['name'];
-            $user->email      = !empty($data['email']) ? $data['email'] : str_slug(strtolower($data['name']), '_') . '@local';
-            $user->password   = bcrypt($data['password']);
+            $user->setAttribute($key, $data[$key]);
+            $user->password = bcrypt($data['password']);
+            $user->name     = !empty($data['name']) ? $data['name'] : $data[$key];
+            if ($key !== 'email') {
+                $user->email = !empty($data['email']) ? $data['email'] : str_slug(strtolower($data[$key]), '_') . '@local';
+            }
             $user->role       = !empty($data['role']) ? $data['role'] : config('auth.roles.0');
             $user->api_token  = !empty($data['api_token']) ? $data['api_token'] : str_unique_random(60);
             $user->rate_limit = !empty($data['rate_limit']) ? $data['rate_limit'] : config('api.rate_limit');

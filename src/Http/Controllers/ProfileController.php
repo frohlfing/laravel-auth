@@ -51,14 +51,14 @@ class ProfileController extends Controller
             $keys[] = config('auth.key');
         }
         $inputs = $request->except($keys);
-        $validator = Validator::make($inputs, array_except($user->getRules(), $keys), [], __('users.model'));
+        $validator = Validator::make($inputs, array_except($user->getRules(), $keys), [], __('auth::model'));
         if ($validator->fails()) {
             return Redirect::route('profile.edit')->withInput()->withErrors($validator);
         }
 
         $user->update($inputs);
 
-        return Redirect::route('profile.index')->with('message', __('profile.successful_updated'));
+        return Redirect::route('profile.index')->with('message', __('auth::profile.successful_updated'));
     }
 
     /**
@@ -74,6 +74,6 @@ class ProfileController extends Controller
         $user->api_token = str_unique_random(60);
         $user->save();
 
-        return Redirect::route('profile.index')->with('message', __('profile.renewed_api_token'));
+        return Redirect::route('profile.index')->with('message', __('auth::profile.renewed_api_token'));
     }
 }

@@ -80,11 +80,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user = new User;
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = bcrypt($data['password']);
-        $user->role = config('auth.roles.0');
-        $user->api_token = str_unique_random(60);
+        $user->name       = $data['name'];
+        $user->email      = $data['email'];
+        $user->password   = bcrypt($data['password']);
+        $user->role       = config('auth.roles.0');
+        $user->api_token  = str_unique_random(60);
         $user->rate_limit = config('api.rate_limit');
         $user->confirmation_token = str_random(60);
 

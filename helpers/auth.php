@@ -4,13 +4,13 @@ use App\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
-if (!function_exists('username')) {
+if (!function_exists('user_name')) {
     /**
-     * Get the name of the current user.
+     * Get the display name of the current user.
      *
      * @return string
      */
-    function username()
+    function user_name()
     {
         /** @var \App\User $user */
         $user = auth()->user();
@@ -69,10 +69,10 @@ if (!function_exists('send_verification_mail')) {
     {
         Mail::send('auth.emails.verify', compact('user'), function($message) use($user) {
             /** @var \Illuminate\Mail\Message $message */
-            $message->to($user->email, $user->name)->subject(__('auth.emails.register.subject'));
+            $message->to($user->email, $user->name)->subject(__('auth::emails.register.subject'));
         });
 
         /** @noinspection PhpUndefinedMethodInspection */
-        Session::flash('message', __('auth.register.email_sent'));
+        Session::flash('message', __('auth::register.email_sent'));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     'register' => [
         'subject' => 'E-Mail-Adresse verifizieren',
         'heading' => 'Herzlich Willkommen!',
@@ -8,6 +9,7 @@ return [
         'button'  => 'Ja, die E-Mail-Adresse ist korrekt!',
         'contact' => 'Falls du dich nicht registriert haben solltest, benachrichtige uns bitte unter',
     ],
+
     'reset' => [
         'subject' => 'Kennwort zurücksetzen',
         'heading' => 'Kennwort zurücksetzen',
@@ -15,4 +17,5 @@ return [
         'button'  => 'Kennwort zurücksetzen!',
         'contact' => 'Falls du das Zurücksetzen des Kennworts nicht initiiert hast, benachrichtige uns bitte unter',
     ],
+
 ];

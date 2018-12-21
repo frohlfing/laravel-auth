@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class ManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,21 +19,24 @@ class UserController extends Controller
      */
     public function index(Request $request, User $builder)
     {
-        $searchTerm = $request->input('search');
-        if ($searchTerm) {
-            $builder = $builder->search($searchTerm);
+        $input = request()->input();
+
+        if (isset($input['search'])) {
+            $builder = $builder->search($input['search']);
         }
 
-        $sortby = $request->input('sortby', 'id');
-        $order = $request->input('order', 'desc');
-        if ($sortby && $order) {
-            $builder = $builder->orderBy($sortby, $order);
+        if (isset($input['sort_by'])) {
+            $builder = $builder->orderBy($input['sort_by'], isset($input['sort_order']) ? $input['sort_order'] : 'asc');
         }
 
-        $itemsPerPage = 20;
-        $users = $builder->paginate($itemsPerPage)->appends($request->input());
+        // todo sortby und order ersetzen mit sort_by und sort_order
+        if (isset($input['sortby'])) {
+            $builder = $builder->orderBy($input['sortby'], isset($input['order']) ? $input['order'] : 'asc');
+        }
 
-        return view('auth::users.index', compact('users'));
+        $users = $builder->paginate(config('auth::per_page'))->appends($input);
+
+        return view('auth::management.index', compact('users'));
     }
 
     /**
@@ -44,7 +47,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('auth::users.show', compact('user'));
+        return view('auth::management.show', compact('user'));
     }
 
     /**
@@ -54,7 +57,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('auth::users.form', ['user' => new User]);
+        return view('auth::management.form', ['user' => new User]);
     }
 
     /**
@@ -71,20 +74,22 @@ class UserController extends Controller
         }
 
         $input = $request->input();
-        $validator = Validator::make($input, $user->getRules(), [], __('users.model'));
+        $validator = Validator::make($input, $user->getRules(), [], __('auth::model'));
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $input['password'] = bcrypt($input['password']);
+
         /** @var User $user */
         /** @noinspection PhpUndefinedMethodInspection */
         $user = $user->create($input);
 
+        // api_token must be explicitly assigned because it does not belong to the fillable fields
         $user->api_token = str_unique_random(60);
         $user->save();
 
-        return redirect('admin/users')->with('message', __('users.form.successful_created'));
+        return redirect('admin/users')->with('message', __('auth::management.form.successful_created'));
     }
 
     /**
@@ -99,7 +104,7 @@ class UserController extends Controller
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        return view('auth::users.form', compact('user'));
+        return view('auth::management.form', compact('user'));
     }
 
     /**
@@ -116,7 +121,7 @@ class UserController extends Controller
 
         $user = $user->replicate();
 
-        return view('auth::users.form', compact('user'));
+        return view('auth::management.form', compact('user'));
     }
 
     /**
@@ -134,11 +139,11 @@ class UserController extends Controller
 
         if (empty($request->input('password'))) {
             $input = $request->except(['password', 'password_confirmation']);
-            $validator = Validator::make($input, array_except($user->getRules(), 'password'), [], __('users.model'));
+            $validator = Validator::make($input, array_except($user->getRules(), 'password'), [], __('auth::model'));
         }
         else {
             $input = $request->input();
-            $validator = Validator::make($input, $user->getRules(), [], __('users.model'));
+            $validator = Validator::make($input, $user->getRules(), [], __('auth::model'));
         }
 
         if ($validator->fails()) {
@@ -148,9 +153,10 @@ class UserController extends Controller
         if (!empty($request->input('password'))) {
             $input['password'] = bcrypt($input['password']);
         }
+
         $user->update($input);
 
-        return redirect('admin/users')->with('message', __('users.form.successful_updated'));
+        return redirect('admin/users')->with('message', __('auth::management.form.successful_updated'));
     }
 
     /**
@@ -168,7 +174,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect('admin/users')->with('message', __('users.form.successful_deleted'));
+        return redirect('admin/users')->with('message', __('auth::management.form.successful_deleted'));
     }
 
     /**
@@ -182,6 +188,6 @@ class UserController extends Controller
         $user->confirmation_token = null;
         $user->save();
 
-        return redirect()->back()->with('message', __('users.form.email_confirmed'));
+        return redirect()->back()->with('message', __('auth::management.form.email_confirmed'));
     }
 }
