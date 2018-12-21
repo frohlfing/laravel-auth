@@ -67,7 +67,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/../resources/views' => resource_path('views/vendor/auth')], 'views');
 
         // assets
-        $this->publishes([__DIR__ . '/../public' => public_path('vendor/frohlfing/auth/')], 'public');
+        $this->publishes([__DIR__ . '/../public' => public_path('vendor/auth')], 'public');
 
         // commands
         if ($this->app->runningInConsole()) {
