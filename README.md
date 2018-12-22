@@ -12,9 +12,7 @@ This package provides following features:
  - User profile
  - Login either by e-mail or username (configurable)
  - Logout
-
-![Screenshot](https://raw.githubusercontent.com/frohlfing/app/master/resources/docs/screenshot-auth.png)     
-
+  
 ## Installation
     
 I have not yet deployed this package to Packagist, the Composers default package archive. Therefore, you must tell 
@@ -60,9 +58,12 @@ todo
 
 s. https://github.com/pletfix/auth-plugin
 
+laravel-Version/Package-Version-Zuordnung
+
 Configuration
 
 Views
+(_form und _show für zusätliche Felder)
 
 Web:
 Roles, ACL, can

@@ -17,18 +17,20 @@ class UpdateUsersTable extends Migration
         $key = config('auth.key');
 
         // 1. Add columns and simple indexes.
+        // Note: We first set default = '' to avoid the following error that occurs with SQLite and Laravel 5.6:
+        // "Cannot add a NOT NULL column with default value NULL"
 
         Schema::table('users', function (Blueprint $table) use ($key) {
             /** @noinspection PhpUndefinedMethodInspection */
             if (!Schema::hasColumn('users', 'role')) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string('role', 16)->after('password');
+                $table->string('role', 16)->default('')->after('password');
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
             if (!Schema::hasColumn('users', 'api_token')) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string('api_token', 60)->after('role');
+                $table->string('api_token', 60)->default('')->after('role');
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
@@ -40,17 +42,17 @@ class UpdateUsersTable extends Migration
             /** @noinspection PhpUndefinedMethodInspection */
             if (!Schema::hasColumn('users', 'confirmation_token')) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string('confirmation_token', 60)->index()->nullable()->after('rate_limit');
+                $table->string('confirmation_token', 60)->nullable()->index()->after('rate_limit');
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
             if ($key !== 'email' && !Schema::hasColumn('users', $key)) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string($key)->after('name');
+                $table->string($key)->default('')->after('name');
             }
         });
 
-        // 2. Set default values for NOT NULL columns.
+        // 2. Replace empty values of NOT NULL columns.
 
         foreach (DB::table('users')->get() as $user) {
             $data = [];
@@ -76,20 +78,34 @@ class UpdateUsersTable extends Migration
             }
         }
 
-        // 3. Set unique indexes.
+        // 3. Reset the default definition and set unique indexes.
         // Note: We can only generate a unique index after we have generated unique values for existing records.
 
         Schema::table('users', function (Blueprint $table) use ($key) {
+            // Reset default constrains.
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $table->string('role')->default(null)->change();
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $table->string('api_token')->default(null)->change();
+
+            if ($key !== 'email') {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $table->string($key)->default(null)->change();
+            }
+
+            // Set unique indexes.
+
             /** @var \Illuminate\Database\Connection $db */
             $db = DB::connection();
-            $t = $table->getTable(); // todo mit table-prefix testen
-            $indexes = $db->getDoctrineSchemaManager()->listTableIndexes($t);
+            $indexes = $db->getDoctrineSchemaManager()->listTableIndexes($db->getTablePrefix() . 'users');
 
-            if (!isset($indexes["{$t}_api_token_unique"])) {
+            if (!isset($indexes['users_api_token_unique'])) {
                 $table->unique(['api_token']);
             }
 
-            if ($key !== 'email' && !isset($indexes["{$t}_{$key}_unique"])) {
+            if ($key !== 'email' && !isset($indexes["users_{$key}_unique"])) {
                 $table->unique([$key]);
             }
         });
@@ -102,27 +118,63 @@ class UpdateUsersTable extends Migration
      */
     public function down()
     {
+        // Bug with Laravel 5.6:
+        // Multiple dropColumns() in one operation causes SQLite errors!
+        // See https://github.com/laravel/framework/issues/2979
+
+//        Schema::table('users', function (Blueprint $table) {
+//            /** @noinspection PhpUndefinedMethodInspection */
+//            if (Schema::hasColumn('users', 'role')) {
+//                $table->dropColumn('role');
+//            }
+//
+//            /** @noinspection PhpUndefinedMethodInspection */
+//            if (Schema::hasColumn('users', 'api_token')) {
+//                $table->dropColumn('api_token');
+//            }
+//
+//            /** @noinspection PhpUndefinedMethodInspection */
+//            if (Schema::hasColumn('users', 'rate_limit')) {
+//                $table->dropColumn('rate_limit');
+//            }
+//
+//            /** @noinspection PhpUndefinedMethodInspection */
+//            if (Schema::hasColumn('users', 'confirmation_token')) {
+//                $table->dropColumn('confirmation_token');
+//            }
+//
+//            $key = config('auth.key');
+//            /** @noinspection PhpUndefinedMethodInspection */
+//            if ($key !== 'email' && Schema::hasColumn('users', $key)) {
+//                $table->dropColumn($key);
+//            }
+//        });
+
         Schema::table('users', function (Blueprint $table) {
             /** @noinspection PhpUndefinedMethodInspection */
             if (Schema::hasColumn('users', 'role')) {
                 $table->dropColumn('role');
             }
-
+        });
+        Schema::table('users', function (Blueprint $table) {
             /** @noinspection PhpUndefinedMethodInspection */
             if (Schema::hasColumn('users', 'api_token')) {
                 $table->dropColumn('api_token');
             }
-
+        });
+        Schema::table('users', function (Blueprint $table) {
             /** @noinspection PhpUndefinedMethodInspection */
             if (Schema::hasColumn('users', 'rate_limit')) {
                 $table->dropColumn('rate_limit');
             }
-
+        });
+        Schema::table('users', function (Blueprint $table) {
             /** @noinspection PhpUndefinedMethodInspection */
             if (Schema::hasColumn('users', 'confirmation_token')) {
                 $table->dropColumn('confirmation_token');
             }
-
+        });
+        Schema::table('users', function (Blueprint $table) {
             $key = config('auth.key');
             /** @noinspection PhpUndefinedMethodInspection */
             if ($key !== 'email' && Schema::hasColumn('users', $key)) {

@@ -29,11 +29,6 @@ class ManagementController extends Controller
             $builder = $builder->orderBy($input['sort_by'], isset($input['sort_order']) ? $input['sort_order'] : 'asc');
         }
 
-        // todo sortby und order ersetzen mit sort_by und sort_order
-        if (isset($input['sortby'])) {
-            $builder = $builder->orderBy($input['sortby'], isset($input['order']) ? $input['order'] : 'asc');
-        }
-
         $users = $builder->paginate(config('auth::per_page'))->appends($input);
 
         return view('auth::management.index', compact('users'));
