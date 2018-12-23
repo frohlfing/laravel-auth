@@ -1,6 +1,6 @@
 {
     "name": "frohlfing/laravel-auth",
-    "description": "User authentication for Laravel 5",
+    "description": "User authentication for Laravel 5.6",
     "keywords": ["laravel", "management", "roles", "access control list", "acl", "api-token", "profile", "login", "logout"],
     "license": "MIT",
     "authors": [
