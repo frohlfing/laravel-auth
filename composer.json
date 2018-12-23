@@ -28,7 +28,7 @@
     "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "1.56.x-dev"
         },
         "laravel": {
             "providers": [
