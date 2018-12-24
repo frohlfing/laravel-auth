@@ -1,7 +1,7 @@
 # User Authentication for Laravel 5.6
 
 This package provides following features: 
- - Registration with email verification
+ - Register via double opt-in process
  - Reset password with email verification
  - Change password
  - User account administration
@@ -28,47 +28,68 @@ Composer where the package is. To do this, add the following lines into your `co
 Download this package by running the following command:
 
     composer require frohlfing/laravel-auth:1.0.*@dev
+    
+Publish the assets:
 
-You need to publish the config file for this package. This will add the file `config/auth.php`, where you can configure 
-this package:
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=public    
+        
+## Customize
+
+### Configuration
+
+This will add the file `config/auth.php`, where you can configure this package:
 
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=config
+    
+### Views
 
-In order to edit the default templates, the views must be published as well. The views will then be placed in 
+If you want to change the views of the package, they must also be published. The views are then placed in 
 `resources/views/vendor/auth`.
 
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=views
-
-Publish the assets by running the following command:
-
-    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=public
     
-You need to run the migrations for this package:
+Note: If you like to add additions user attributes, you may add the partials `_form.blade.php` and `_show.blade.php` to 
+this folder which are included by the existing views. 
+
+### Migrations
+
+Further, you can publish the migrations for this package to modify them:
 
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=migrations
     php artisan migrate
     
-Add menu item:    
+### Menu    
 
-todo
+You may insert the personal menu items items to login and logout like this:
+
+    <!-- Right Side Of Navbar -->
+    <ul class="navbar-nav ml-auto">
+        @include('auth::_nav')
+    </ul>
     
-## Usage
+## Middleware
 
-todo
+This package provides two middleware. Register them in `app/Http/Kerel.php`:    
 
-s. https://github.com/pletfix/auth-plugin
+    protected $routeMiddleware = [
+        'confirmed' => \App\Http\Middleware\CheckConfirmed::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
+    ];
+    
+After then you could use the middleware to check the role of the current user:
+    
+    Route::middleware(['role:master'])->group(function () {
+        ...
+    });
 
-laravel-Version/Package-Version-Zuordnung
+Write this to check the user email address is confirmed:
 
-Configuration
+    Route::middleware(['confirmed'])->group(function () {
+        ...
+    });
 
-Views
-(_form und _show für zusätliche Felder)
+To protect the api requests using token authentication and rate limiting:
 
-Web:
-Roles, ACL, can
-
-API:
-api_token
-rate_limit
-
+    Route::middleware(['auth:api', 'throttle:rate_limit,1'])->group(function () {
+        ...
+    });

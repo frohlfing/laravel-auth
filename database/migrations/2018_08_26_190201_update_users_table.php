@@ -17,20 +17,22 @@ class UpdateUsersTable extends Migration
         $key = config('auth.key');
 
         // 1. Add columns and simple indexes.
-        // Note: We first set default = '' to avoid the following error that occurs with SQLite and Laravel 5.6:
-        // "Cannot add a NOT NULL column with default value NULL"
 
-        Schema::table('users', function (Blueprint $table) use ($key) {
+        // Note: We set default = '' to avoid the following error that occurs with SQLite and Laravel 5.6:
+        // "Cannot add a NOT NULL column with default value NULL"
+        $driver = Schema::connection($this->getConnection())->getConnection()->getDriverName();
+
+        Schema::table('users', function (Blueprint $table) use ($driver, $key) {
             /** @noinspection PhpUndefinedMethodInspection */
             if (!Schema::hasColumn('users', 'role')) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string('role', 16)->default('')->after('password');
+                $table->string('role', 16)->default($driver === 'sqlite' ? '' : null)->after('password');
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
             if (!Schema::hasColumn('users', 'api_token')) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string('api_token', 60)->default('')->after('role');
+                $table->string('api_token', 60)->default($driver === 'sqlite' ? '' : null)->after('role');
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
@@ -48,7 +50,7 @@ class UpdateUsersTable extends Migration
             /** @noinspection PhpUndefinedMethodInspection */
             if ($key !== 'email' && !Schema::hasColumn('users', $key)) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string($key)->default('')->after('name');
+                $table->string($key)->default($driver === 'sqlite' ? '' : null)->after('name');
             }
         });
 
@@ -79,27 +81,34 @@ class UpdateUsersTable extends Migration
         }
 
         // 3. Reset the default definition and set unique indexes.
-        // Note: We can only generate a unique index after we have generated unique values for existing records.
 
-        Schema::table('users', function (Blueprint $table) use ($key) {
+        Schema::table('users', function (Blueprint $table) use ($driver, $key) {
             // Reset default constrains.
 
-            /** @noinspection PhpUndefinedMethodInspection */
-            $table->string('role')->default(null)->change();
-
-            /** @noinspection PhpUndefinedMethodInspection */
-            $table->string('api_token')->default(null)->change();
-
-            if ($key !== 'email') {
+            if ($driver === 'sqlite') {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string($key)->default(null)->change();
+                $table->string('role')->default(null)->change();
+
+                /** @noinspection PhpUndefinedMethodInspection */
+                $table->string('api_token')->default(null)->change();
+
+                if ($key !== 'email') {
+                    /** @noinspection PhpUndefinedMethodInspection */
+                    $table->string($key)->default(null)->change();
+                }
             }
 
             // Set unique indexes.
+            // Note: We can only generate a unique index after we have generated unique values for existing records.
 
             /** @var \Illuminate\Database\Connection $db */
             $db = DB::connection();
-            $indexes = $db->getDoctrineSchemaManager()->listTableIndexes($db->getTablePrefix() . 'users');
+            try {
+                $indexes = $db->getDoctrineSchemaManager()->listTableIndexes($db->getTablePrefix() . 'users');
+            }
+            catch (PDOException $e) { // MSSQL 2008: Driver does not support this function: driver does not support that attribute
+                $indexes = [];
+            }
 
             if (!isset($indexes['users_api_token_unique'])) {
                 $table->unique(['api_token']);
