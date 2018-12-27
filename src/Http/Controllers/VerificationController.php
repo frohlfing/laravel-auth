@@ -3,50 +3,49 @@
 namespace FRohlfing\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class VerificationController extends Controller
 {
-	/**
-     * Send an email to verify the email address (ones more).
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
+    /*
+    |--------------------------------------------------------------------------
+    | Email Verification Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling email verification for any
+    | user that recently registered with the application. Emails may also
+    | be re-sent if the user didn't receive the original email message.
+    |
+    */
+
+    use VerifiesEmails;
+
+    /**
+     * Where to redirect users after verification.
+     *
+     * @var string
      */
-	public function send() //resend()
-	{
-        /** @var User $user */
-        $user = Auth::user();
-		if ($user->confirmed) {
-			return redirect()->back()->with('message', __('auth::register.email_already_verified'));
-		}
+    protected $redirectTo = '';
 
-		send_verification_mail($user);
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('signed')->only('verify');
+        $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
 
-		return redirect()->back()->with('message', __('auth::register.email_sent'));
-	}
-
-	/**
-	 * Confirm the email address.
-	 *
+    /**
+     * Show the email verification notice.
+     *
      * @param \Illuminate\Http\Request $request
-	 * @param string $confirmationToken
-	 * @return \Illuminate\View\View
-	 */
-	public function confirm(Request $request, $confirmationToken)
-	{
-	    $email = $request->input('email');
-		/** @var User $user */
-		$user = User::whereConfirmationToken($confirmationToken)->whereEmail($email)->first();
-		if ($user === null) {
-			abort(Response::HTTP_FORBIDDEN, __('auth::register.token_invalid'));
-		}
-
-        $user->confirmation_token = null;
-        $user->save();
-
-		return view('auth::confirm', compact('user'));
-	}
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Request $request)
+    {
+        return $request->user()->hasVerifiedEmail() ? redirect($this->redirectPath()) : view('auth::verify');
+    }
 }

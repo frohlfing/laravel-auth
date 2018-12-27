@@ -67,7 +67,7 @@ class ForgotPasswordController extends Controller
         $response = str_replace('passwords.', 'auth::broker.', $response);
 
         return $ok
-            ? $this->sendResetLinkResponse($response)
+            ? $this->sendResetLinkResponse($request, $response)
             : $this->sendResetLinkFailedResponse($request, $response);
     }
 }

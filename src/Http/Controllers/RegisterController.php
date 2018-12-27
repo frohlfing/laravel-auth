@@ -86,7 +86,6 @@ class RegisterController extends Controller
         $user->role       = config('auth.roles.0');
         $user->api_token  = str_unique_random(60);
         $user->rate_limit = config('api.rate_limit');
-        $user->confirmation_token = str_random(60);
 
         $key = config('auth.key');
         if ($key !== 'email') {
@@ -106,6 +105,6 @@ class RegisterController extends Controller
      */
     protected function registered(/** @noinspection PhpUnusedParameterInspection */ Request $request, $user)
     {
-        send_verification_mail($user);
+        $user->sendEmailVerificationNotification();
     }
 }

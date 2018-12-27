@@ -58,11 +58,11 @@
                             </div>
                             <div class="col-xs-12 col-sm-9">
                                 {{ $user->email}}
-                                @if(!$user->confirmed)
+                                @if(!$user->hasVerifiedEmail())
                                     <div>
-                                        <i class="fas fa-exclamation-circle" style="color:red;" title="{{ __('auth::profile.email_not_confirmed') }}"></i>
-                                        <i>{{ __('auth::profile.email_not_confirmed') }}</i>
-                                        <a href="{{route('auth.verification.send') }}" class="btn btn-link">
+                                        <i class="fas fa-exclamation-circle" style="color:red;" title="{{ __('auth::profile.email_not_verified') }}"></i>
+                                        <i>{{ __('auth::profile.email_not_verified') }}</i>
+                                        <a href="{{route('verification.resend') }}" class="btn btn-link">
                                             {{ __('auth::profile.resend_email') }}
                                         </a>
                                     </div>

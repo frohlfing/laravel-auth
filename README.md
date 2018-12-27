@@ -1,4 +1,4 @@
-# User Authentication for Laravel 5.6
+# User Authentication for Laravel 5.7
 
 This package provides following features: 
  - Register via double opt-in process
@@ -69,11 +69,10 @@ You may insert the personal menu items items to login and logout like this:
     
 ## Middleware
 
-This package provides two middleware. Register them in `app/Http/Kerel.php`:    
+This package provides a middleware `CheckRole`. Register them in `app/Http/Kerel.php`:    
 
     protected $routeMiddleware = [
-        'confirmed' => \App\Http\Middleware\CheckConfirmed::class,
-        'role' => \App\Http\Middleware\CheckRole::class,
+        'role' => \FRohlfing\Auth\Http\Middleware\CheckRole::class,
     ];
     
 After then you could use the middleware to check the role of the current user:
@@ -81,10 +80,16 @@ After then you could use the middleware to check the role of the current user:
     Route::middleware(['role:master'])->group(function () {
         ...
     });
+    
+Or check the ability of the user as follows:
+    
+    Route::middleware(['can:manage-users'])->group(function () {
+        ...
+    });
 
-Write this to check the user email address is confirmed:
+Write this to make sure the email address has been verified:
 
-    Route::middleware(['confirmed'])->group(function () {
+    Route::middleware(['verified'])->group(function () {
         ...
     });
 

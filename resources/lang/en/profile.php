@@ -4,8 +4,8 @@ return [
 
     'title'                => 'My Profile',
     'heading'              => 'My Profile',
-    'email_not_confirmed'  => 'Check your email inbox and confirm the email address.',
-    'resend_email'         => 'Resend email for verification',
+    'email_not_verified'   => 'The e-mail address has not yet been verified. Please check your email for a verification link.',
+    'resend_email'         => 'Resend verification link',
     'renew_api_token'      => 'Generate new API token',
     'renew_api_token_hint' => 'The API token is overwritten. Continue?',
     'renewed_api_token'    => 'The API token has been renewed.',

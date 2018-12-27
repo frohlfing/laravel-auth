@@ -62,9 +62,9 @@
                                             @endif
                                             <td>
                                                 {{ $user->email }}
-                                                @if(!$user->confirmed)
-                                                    <i class="fas fa-exclamation-circle not_confirmed-icon" title="{{ __('auth::management.index.email_not_confirmed') }}"></i>
-                                                    <a href="{{ route('admin.users.confirm', [$user->id]) }}" data-method="PATCH" class="btn btn-link confirm-button">{{ __('auth::management.index.confirm_button') }}</a>
+                                                @if(!$user->hasVerifiedEmail())
+                                                    <i class="fas fa-exclamation-circle not_confirmed-icon" title="{{ __('auth::management.index.email_not_verified') }}"></i>
+                                                    <a href="{{ route('admin.users.verify', [$user->id]) }}" data-method="PATCH" class="btn btn-link confirm-button">{{ __('auth::management.index.verified_button') }}</a>
                                                 @endif
                                             </td>
                                             <td>{{ $user->role }}</td>

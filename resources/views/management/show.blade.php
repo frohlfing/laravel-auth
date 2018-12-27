@@ -43,9 +43,9 @@
                             </div>
                             <div class="col-xs-12 col-sm-9">
                                 {{ $user->email }}
-                                @if(!$user->confirmed)
-                                    <i class="fas fa-exclamation-circle" style="color:red;" title="{{ __('auth::management.show.email_not_confirmed') }}"></i>
-                                    <i>{{ __('auth::management.form.email_not_confirmed') }}</i>
+                                @if(!$user->hasVerifiedEmail())
+                                    <i class="fas fa-exclamation-circle" style="color:red;" title="{{ __('auth::management.show.email_not_verified') }}"></i>
+                                    <i>{{ __('auth::management.show.email_not_verified') }}</i>
                                 @endif
                             </div>
                         </div>

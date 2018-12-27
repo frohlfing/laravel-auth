@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-//Auth::routes(); // s. vendor/laravel/framework/src/Illuminate/Routing/Router.php (1129),  function auth()
+//Auth::routes(); // s. vendor/laravel/framework/src/Illuminate/Routing/Router.php (1147),  function auth()
 
 ///////////////////////////////////////////////////////////////////////
 // Authentication
@@ -37,7 +37,7 @@ if (!Route::has('password.reset')) {
     Route::get('password/reset', '\FRohlfing\Auth\Http\Controllers\ForgotPasswordController@showLinkRequestForm')->name('password.request');
     Route::post('password/email', '\FRohlfing\Auth\Http\Controllers\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
     Route::get('password/reset/{token}', '\FRohlfing\Auth\Http\Controllers\ResetPasswordController@showResetForm')->name('password.reset');
-    Route::post('password/reset', '\FRohlfing\Auth\Http\Controllers\ResetPasswordController@reset');
+    Route::post('password/reset', '\FRohlfing\Auth\Http\Controllers\ResetPasswordController@reset')->name('password.update');
 }
 
 // todo hier auth/ aus der URL nehmen
@@ -47,13 +47,15 @@ if (!Route::has('password.reset')) {
 ///////////////////////////////////////////////////////////////////////
 
 /** @noinspection PhpUndefinedMethodInspection */
-if (!Route::has('auth.verification.confirm')) {
-    Route::get('auth/verification/confirm/{confirmationToken}', '\FRohlfing\Auth\Http\Controllers\VerificationController@confirm')->name('auth.verification.confirm');
+if (!Route::has('verification.verify')) {
+    Route::get('email/verify', '\FRohlfing\Auth\Http\Controllers\VerificationController@show')->name('verification.notice');
+    Route::get('email/verify/{id}', '\FRohlfing\Auth\Http\Controllers\VerificationController@verify')->name('verification.verify');
 }
+
 /** @noinspection PhpUndefinedMethodInspection */
-if (!Route::has('auth.verification.send')) {
+if (!Route::has('verification.resend')) {
     Route::middleware(['auth'])->group(function () {
-        Route::get('auth/verification/send', '\FRohlfing\Auth\Http\Controllers\VerificationController@send')->name('auth.verification.send');
+        Route::get('email/resend', '\FRohlfing\Auth\Http\Controllers\VerificationController@resend')->name('verification.resend');
     });
 }
 
@@ -93,7 +95,7 @@ if (!Route::has('profile.index')) {
 if (!Route::has('admin.users.index')) {
     Route::middleware(['can:manage-users'])->group(function () {
         Route::get('admin/users/{user}/replicate', '\FRohlfing\Auth\Http\Controllers\ManagementController@replicate')->name('admin.users.replicate');
-        Route::patch('admin/users/{user}/confirm', '\FRohlfing\Auth\Http\Controllers\ManagementController@confirm')->name('admin.users.confirm');
+        Route::patch('admin/users/{user}/verify', '\FRohlfing\Auth\Http\Controllers\ManagementController@verify')->name('admin.users.verify');
         Route::resource('admin/users', '\FRohlfing\Auth\Http\Controllers\ManagementController', ['as' => 'admin']);
     });
 }

@@ -19,7 +19,7 @@ class ManagementController extends Controller
      */
     public function index(Request $request, User $builder)
     {
-        $input = request()->input();
+        $input = $request->input();
 
         if (isset($input['search'])) {
             $builder = $builder->search($input['search']);
@@ -80,7 +80,8 @@ class ManagementController extends Controller
         /** @noinspection PhpUndefinedMethodInspection */
         $user = $user->create($input);
 
-        // api_token must be explicitly assigned because it does not belong to the fillable fields
+        // email_verified_at and api_token must be explicitly assigned because it does not belong to the fillable fields
+        $user->email_verified_at = $user->freshTimestamp();
         $user->api_token = str_unique_random(60);
         $user->save();
 
@@ -173,16 +174,15 @@ class ManagementController extends Controller
     }
 
     /**
-     * Confirm the email address.
+     * Verify the email address.
      *
      * @param \App\User $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function confirm(User $user)
+    public function verify(User $user)
     {
-        $user->confirmation_token = null;
-        $user->save();
+        $user->markEmailAsVerified();
 
-        return redirect()->back()->with('message', __('auth::management.form.email_confirmed'));
+        return redirect()->back()->with('message', __('auth::management.form.email_verified'));
     }
 }

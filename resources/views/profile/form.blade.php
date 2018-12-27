@@ -54,10 +54,10 @@
                                 </label>
                                 <div class="col-md-6">
                                     <input id="email" value="{{$user->email}}" type="email" class="form-control" readonly="readonly"/>
-                                    @if(!$user->confirmed)
+                                    @if(!$user->hasVerifiedEmail())
                                         <div style="padding-top: 5px">
-                                            <i class="fas fa-exclamation-circle" style="color:red" title="{{ __('auth::profile.email_not_confirmed') }}"></i>
-                                            <i>{{ __('auth::profile.email_not_confirmed') }}</i>
+                                            <i class="fas fa-exclamation-circle" style="color:red" title="{{ __('auth::profile.email_not_verified') }}"></i>
+                                            <i>{{ __('auth::profile.email_not_verified') }}</i>
                                         </div>
                                     @endif
                                 </div>

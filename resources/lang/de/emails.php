@@ -2,7 +2,7 @@
 
 return [
 
-    'register' => [
+    'verify' => [
         'subject' => 'E-Mail-Adresse verifizieren',
         'heading' => 'Herzlich Willkommen!',
         'text'    => 'Deine Registrierung bei :app ist fast abgeschlossen! Bitte rufe nachfolgenden Link auf, um die Echtheit deiner E-Mail-Adresse zu bestätigen.',

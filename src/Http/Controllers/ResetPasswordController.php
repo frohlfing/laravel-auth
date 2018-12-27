@@ -62,7 +62,8 @@ class ResetPasswordController extends Controller
      */
     public function reset(Request $request)
     {
-        $this->validate($request, $this->rules(), $this->validationErrorMessages());
+        /** @noinspection PhpUndefinedMethodInspection */
+        $request->validate($this->rules(), $this->validationErrorMessages());
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
@@ -80,7 +81,7 @@ class ResetPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $ok
-            ? $this->sendResetResponse($response)
+            ? $this->sendResetResponse($request, $response)
             : $this->sendResetFailedResponse($request, $response);
     }
 
