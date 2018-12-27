@@ -24,6 +24,12 @@ class UpdateUsersTable extends Migration
 
         Schema::table('users', function (Blueprint $table) use ($driver, $key) {
             /** @noinspection PhpUndefinedMethodInspection */
+            if (!Schema::hasColumn('users', 'email_verified_at')) { // should exist since Laravel 5.7 by default
+                /** @noinspection PhpUndefinedMethodInspection */
+                $table->timestamp('email_verified_at')->nullable()->after('email');
+            }
+
+            /** @noinspection PhpUndefinedMethodInspection */
             if (!Schema::hasColumn('users', 'role')) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $table->string('role', 16)->default($driver === 'sqlite' ? '' : null)->after('password');
@@ -42,12 +48,6 @@ class UpdateUsersTable extends Migration
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
-            if (!Schema::hasColumn('users', 'confirmation_token')) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $table->string('confirmation_token', 60)->nullable()->index()->after('rate_limit');
-            }
-
-            /** @noinspection PhpUndefinedMethodInspection */
             if ($key !== 'email' && !Schema::hasColumn('users', $key)) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 $table->string($key)->default($driver === 'sqlite' ? '' : null)->after('name');
@@ -59,6 +59,10 @@ class UpdateUsersTable extends Migration
         foreach (DB::table('users')->get() as $user) {
             $data = [];
 
+            if (empty($user->email_verified_at)) {
+                $data['email_verified_at'] = empty($user->confirmation_token) ? $user->created_at : null;
+            }
+
             if (empty($user->role)) {
                 $data['role'] = config('auth.roles.0');
             }
@@ -67,9 +71,9 @@ class UpdateUsersTable extends Migration
                 $data['api_token'] = str_unique_random(60);
             }
 
-            //if ($user->rate_limit === null) {
-            //    $data['rate_limit'] = config('api.rate_limit');
-            //}
+            if ($user->rate_limit === null) {
+                $data['rate_limit'] = config('api.rate_limit');
+            }
 
             if ($key !== 'email' && empty($user->{$key})) {
                 $data[$key] = uniqid();
@@ -118,6 +122,13 @@ class UpdateUsersTable extends Migration
                 $table->unique([$key]);
             }
         });
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        //if (Schema::hasColumn('users', 'confirmation_token')) { // obsolete column
+        //    Schema::table('users', function (Blueprint $table) {
+        //        $table->dropColumn('confirmation_token');
+        //    });
+        //}
     }
 
     /**
@@ -147,17 +158,14 @@ class UpdateUsersTable extends Migration
 //                $table->dropColumn('rate_limit');
 //            }
 //
-//            /** @noinspection PhpUndefinedMethodInspection */
-//            if (Schema::hasColumn('users', 'confirmation_token')) {
-//                $table->dropColumn('confirmation_token');
-//            }
-//
 //            $key = config('auth.key');
 //            /** @noinspection PhpUndefinedMethodInspection */
 //            if ($key !== 'email' && Schema::hasColumn('users', $key)) {
 //                $table->dropColumn($key);
 //            }
 //        });
+
+        // Do not drop email_verified_at because it is a default column since Laravel 5.7.
 
         Schema::table('users', function (Blueprint $table) {
             /** @noinspection PhpUndefinedMethodInspection */
@@ -175,12 +183,6 @@ class UpdateUsersTable extends Migration
             /** @noinspection PhpUndefinedMethodInspection */
             if (Schema::hasColumn('users', 'rate_limit')) {
                 $table->dropColumn('rate_limit');
-            }
-        });
-        Schema::table('users', function (Blueprint $table) {
-            /** @noinspection PhpUndefinedMethodInspection */
-            if (Schema::hasColumn('users', 'confirmation_token')) {
-                $table->dropColumn('confirmation_token');
             }
         });
         Schema::table('users', function (Blueprint $table) {
