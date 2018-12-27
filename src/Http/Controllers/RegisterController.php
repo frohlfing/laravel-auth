@@ -29,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'profile';
+    protected $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -41,6 +41,7 @@ class RegisterController extends Controller
         }
 
         $this->middleware('guest');
+        $this->redirectTo = config('auth.redirect_to_after_register', '');
     }
 
     /**
@@ -101,10 +102,11 @@ class RegisterController extends Controller
      * The user has been registered.
      *
      * @param \Illuminate\Http\Request $request
-     * @param  mixed  $user
+     * @param mixed $user
      */
     protected function registered(/** @noinspection PhpUnusedParameterInspection */ Request $request, $user)
     {
+        /** @var \App\User $user */
         $user->sendEmailVerificationNotification();
     }
 }

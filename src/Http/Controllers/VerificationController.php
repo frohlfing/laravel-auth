@@ -26,7 +26,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '';
+    protected $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -35,7 +35,10 @@ class VerificationController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
+        $maxAttempts  = config('auth.verification_throttling.max_attempts', 6);
+        $decayMinutes = config('auth.verification_throttling.decay_minutes', 1);
+        $this->middleware("throttle:{$maxAttempts},{$decayMinutes}")->only('verify', 'resend');
+        $this->redirectTo = config('auth.redirect_to_after_verify', '');
     }
 
     /**

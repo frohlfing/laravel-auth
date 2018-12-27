@@ -27,7 +27,7 @@ class ChangePasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '';
+    protected $redirectTo;
 
     /**
      * Create a new password change controller instance.
@@ -35,6 +35,7 @@ class ChangePasswordController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->redirectTo = config('auth.redirect_to_after_change', '');
     }
 
     /**

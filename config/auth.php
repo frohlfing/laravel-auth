@@ -144,6 +144,22 @@ return [
 
     'forgot_password' => true,
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Forgot Password Feature
+    |--------------------------------------------------------------------------
+    |
+    | Where to redirect users after successful operation.
+    |
+    */
+
+    'redirect_to_after_change'   => '',
+    'redirect_to_after_login'    => '',
+    'redirect_to_after_register' => 'profile',
+    'redirect_to_after_reset'    => '',
+    'redirect_to_after_verify'   => '',
+
     /*
     |--------------------------------------------------------------------------
     | Login Throttling
@@ -158,6 +174,20 @@ return [
     'login_throttling' => [
         'max_attempts'  => 5,
         'decay_minutes' => 1,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Verification Throttling
+    |--------------------------------------------------------------------------
+    |
+    | Maximal attempts to resend a verification link.
+    |
+    */
+
+    'verification_throttling' => [
+        'max_attempts'  => 1,
+        'decay_minutes' => 10,
     ],
 
     /*
