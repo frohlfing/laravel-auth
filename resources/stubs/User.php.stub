@@ -112,48 +112,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'rate_limit' => 'int|nullable',
     ];
 
-//    /**
-//     * The booting method of the model
-//     */
-//    public static function boot()
-//    {
-//        parent::boot();
-//
-//        // Attach event handler, on creating or updating of the user
-//		//static::saving(function($user) {
-//		//	/** @var self $user */
-//		//});
-//
-//        // Attach event handler, on creating of the user
-//        //static::creating(function($user) {
-//        //    /** @var self $user */
-//        //});
-//
-//        // Attach event handler, on updating of the user
-//        static::updating(function($user) {
-//            /** @var self $user */
-//            if (Auth::guest()) {
-//                abort(403);
-//            }
-//            /** @var self $currUser */
-//            $currUser = Auth::user();
-//            if ($currUser === $user){
-//                if ($user->isDirty('role')) {
-//                //if ($user->role !== $user->getOriginal('role')) {
-//                    abort(403);
-//                }
-//            }
-//            else {
-//                if ($currUser->cannot('manage-users')) {
-//                    abort(403);
-//                }
-//                if ($user->role > $currUser->role) {
-//                    abort(403);
-//                }
-//            }
-//        });
-//    }
-
     /**
      * The channels the user receives notification broadcasts on.
      *
@@ -207,7 +165,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRules()
     {
         $rules = $this->_getRules();
-        $rules['password'] = str_replace('min:#', 'min:' . config('auth.password_length'), $rules['password']);
+        $rules['password'] = str_replace('min:#', 'min:' . config('auth::password_length'), $rules['password']);
 
         return $rules;
     }

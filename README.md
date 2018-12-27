@@ -27,7 +27,7 @@ Composer where the package is. To do this, add the following lines into your `co
 
 Download this package by running the following command:
 
-    composer require frohlfing/laravel-auth:1.0.*@dev
+    composer require frohlfing/laravel-auth:1.57.*@dev
     
 Override the `User` model:
 
@@ -61,7 +61,7 @@ If you want to change the translation, publish the language files:
     
 ### Migrations
 
-Further, you can publish the migrations for this package to modify them:
+Further, you can publish the migrations:
 
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=migrations
     
