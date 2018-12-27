@@ -124,11 +124,11 @@ class UpdateUsersTable extends Migration
         });
 
         /** @noinspection PhpUndefinedMethodInspection */
-        //if (Schema::hasColumn('users', 'confirmation_token')) { // obsolete column
-        //    Schema::table('users', function (Blueprint $table) {
-        //        $table->dropColumn('confirmation_token');
-        //    });
-        //}
+        if (Schema::hasColumn('users', 'confirmation_token')) { // obsolete column
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('confirmation_token');
+            });
+        }
     }
 
     /**

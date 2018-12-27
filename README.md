@@ -29,21 +29,23 @@ Download this package by running the following command:
 
     composer require frohlfing/laravel-auth:1.0.*@dev
     
-Publish the assets:
+Override the `User` model:
 
-    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=public    
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=models    
+       
+Copy the configuration file to `config/auth.php`:
         
-## Customize
-
-### Configuration
-
-This will add the file `config/auth.php`, where you can configure this package:
-
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=config
+    
+Set the authentication key in the configuration file, then run the database migration:
+        
+    php artisan migrate
+            
+## Customize
     
 ### Views
 
-If you want to change the views of the package, they must also be published. The views are then placed in 
+If you want to change the views of the package, they must be published. The views are then placed in 
 `resources/views/vendor/auth`.
 
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=views
@@ -51,12 +53,17 @@ If you want to change the views of the package, they must also be published. The
 Note: If you like to add additions user attributes, you may add the partials `_form.blade.php` and `_show.blade.php` to 
 this folder which are included by the existing views. 
 
+### Translation
+
+If you want to change the translation, publish the language files:
+
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=lang
+    
 ### Migrations
 
 Further, you can publish the migrations for this package to modify them:
 
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=migrations
-    php artisan migrate
     
 ### Menu    
 
