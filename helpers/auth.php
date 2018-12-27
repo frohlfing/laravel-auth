@@ -57,9 +57,6 @@ if (!function_exists('is_superior')) {
 }
 
 if (!function_exists('send_verification_mail')) {
-    // todo zum User-Model  packen (wird vom VerificationController und RegisterController verwendet)
-    // oder User::sendPasswordResetNotification zum PasswortController packen
-
     /**
      * Send an email to the user for verification the email address.
      *
@@ -67,7 +64,7 @@ if (!function_exists('send_verification_mail')) {
      */
     function send_verification_mail(User $user)
     {
-        Mail::send('auth.emails.verify', compact('user'), function($message) use($user) {
+        Mail::send('auth::emails.verify', compact('user'), function($message) use($user) {
             /** @var \Illuminate\Mail\Message $message */
             $message->to($user->email, $user->name)->subject(__('auth::emails.register.subject'));
         });

@@ -45,7 +45,7 @@
                                 {{ $user->email }}
                                 @if(!$user->confirmed)
                                     <i class="fas fa-exclamation-circle" style="color:red;" title="{{ __('auth::management.show.email_not_confirmed') }}"></i>
-                                    <i>{{ __('auth::management.form.email_not_confirmed') }}</i>
+                                    <i>{{ __('auth::management.show.email_not_confirmed') }}</i>
                                 @endif
                             </div>
                         </div>

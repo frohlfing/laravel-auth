@@ -72,8 +72,8 @@ You may insert the personal menu items items to login and logout like this:
 This package provides two middleware. Register them in `app/Http/Kerel.php`:    
 
     protected $routeMiddleware = [
-        'confirmed' => \App\Http\Middleware\CheckConfirmed::class,
-        'role' => \App\Http\Middleware\CheckRole::class,
+        'confirmed' => \FRohlfing\Auth\Http\Middleware\CheckConfirmed::class,
+        'role' => \FRohlfing\Auth\Http\Middleware\CheckRole::class,
     ];
     
 After then you could use the middleware to check the role of the current user:
