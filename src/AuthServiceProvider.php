@@ -27,13 +27,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         // merge the custom config
         $this->mergeConfigFrom(__DIR__ . '/../config/auth.php', 'auth');
-
-        // Register class
-
-//        $this->app->singleton(AuthService::class, function ($app) {
-//            $config = $app['config']['auth'];
-//            return new AuthService($config['foo_bar']);
-//        });
     }
 
     /**
@@ -66,8 +59,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'auth');
         $this->publishes([__DIR__ . '/../resources/views' => resource_path('views/vendor/auth')], 'views');
 
-        // assets
-        $this->publishes([__DIR__ . '/../public' => public_path('vendor/auth')], 'public');
+        // model
+        $this->publishes([__DIR__ . '/../resources/stubs/User.php.stub' => app_path('User.php')], 'models');
 
         // commands
         if ($this->app->runningInConsole()) {

@@ -55,21 +55,3 @@ if (!function_exists('is_superior')) {
         return $role !== null && $roles[$role] > $roles[auth()->user()->role];
     }
 }
-
-if (!function_exists('send_verification_mail')) {
-    /**
-     * Send an email to the user for verification the email address.
-     *
-     * @param User $user
-     */
-    function send_verification_mail(User $user)
-    {
-        Mail::send('auth::emails.verify', compact('user'), function($message) use($user) {
-            /** @var \Illuminate\Mail\Message $message */
-            $message->to($user->email, $user->name)->subject(__('auth::emails.register.subject'));
-        });
-
-        /** @noinspection PhpUndefinedMethodInspection */
-        Session::flash('message', __('auth::register.email_sent'));
-    }
-}

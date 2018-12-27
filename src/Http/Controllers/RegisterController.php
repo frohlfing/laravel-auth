@@ -29,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'profile';
+    protected $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -41,6 +41,8 @@ class RegisterController extends Controller
         }
 
         $this->middleware('guest');
+
+        $this->redirectTo = config('auth.redirect_to_after_register', '');
     }
 
     /**
@@ -106,6 +108,6 @@ class RegisterController extends Controller
      */
     protected function registered(/** @noinspection PhpUnusedParameterInspection */ Request $request, $user)
     {
-        send_verification_mail($user);
+        $user->sendEmailVerificationNotification();
     }
 }

@@ -1,0 +1,182 @@
+<?php
+
+namespace App;
+
+use App\Traits\AccessesRules;
+use App\Traits\Searchable;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Mail;
+
+/**
+ * App\User
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $username
+ * @property string $email
+ * @property string $password
+ * @property string $role
+ * @property string $api_token
+ * @property integer $rate_limit
+ * @property string $confirmation_token
+ * @property string $remember_token
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read bool $confirmed
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @method static create(array $attributes = [])
+ * @method static Builder|User search($terms)
+ * @method static truncate()
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User whereUsername($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereRole($value)
+ * @method static Builder|User whereApiToken($value)
+ * @method static Builder|User whereRateLimit($value)
+ * @method static Builder|User whereConfirmationToken($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @mixin Builder // Strange! PhpStorm stops Auto Complete function if uncommented, but only in User Model! :-(
+ */
+class User extends Authenticatable
+{
+    use Notifiable, Searchable;
+
+    use AccessesRules {
+        getRules as protected _getRules;
+    }
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'username',
+        'email',
+        'password',
+        'role',
+        'rate_limit'
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+        'confirmation_token',
+        'remember_token',
+        'api_token',
+    ];
+
+    /**
+     * Searchable fields.
+     *
+     * @var array
+     */
+    protected $searchable = [
+        'name',
+        'username',
+        'email',
+        'role',
+    ];
+
+    /**
+     * Validation rules.
+     *
+     * @var array
+     */
+    protected $rules = [
+        'name'       => 'required|max:255',
+        'username'   => 'required|max:255|unique:users,username,{id}',
+        'email'      => 'required|email|max:255|unique:users,email,{id}',
+        'password'   => 'required|min:#|max:255|confirmed', // the minimum length is set by getRules().
+        'role'       => 'required|max:16',
+        'rate_limit' => 'int|nullable',
+    ];
+
+    /**
+     * Determines if the email address was confirmed.
+     *
+     * @return bool
+     */
+    public function getConfirmedAttribute()
+    {
+        return empty($this->confirmation_token);
+    }
+
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        return config('broadcasting.prefix') . '-user.' . $this->id;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        //$this->notify(new ResetPasswordNotification($token));
+        $user = $this;
+        Mail::send('auth::emails.reset', compact('token', 'user'), function($message) use($user) {
+            /** @var \Illuminate\Mail\Message $message */
+            $message->to($user->getEmailForPasswordReset(), $user->name)->subject(__('auth::emails.reset.subject'));
+        });
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        Mail::send('auth::emails.verify', compact('user'), function($message) use($user) {
+            /** @var \Illuminate\Mail\Message $message */
+            $message->to($user->email, $user->name)->subject(__('auth::emails.register.subject'));
+        });
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        session()->flash('message', __('auth::register.email_sent'));
+    }
+
+    /**
+     * Get the validation rules.
+     *
+     * The placeholder {id} is replaced with the ID of the current instances to avoid an Unique Rule Error.
+     * Furthermore, the minimum length of the password is set to the configuration value.
+     *
+     * @return array
+     */
+    public function getRules()
+    {
+        $rules = $this->_getRules();
+        $rules['password'] = str_replace('min:#', 'min:' . config('auth::password_length'), $rules['password']);
+
+        return $rules;
+    }
+}

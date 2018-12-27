@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '';
+    protected $redirectTo;
 
     /**
      * Create a new controller instance.
@@ -36,6 +36,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->redirectTo = config('auth.redirect_to_after_login', '');
     }
 
     /**
@@ -52,6 +53,7 @@ class LoginController extends Controller
      * Get the failed login response instance.
      *
      * @param \Illuminate\Http\Request $request
+     * @throws ValidationException
      */
     protected function sendFailedLoginResponse(/** @noinspection PhpUnusedParameterInspection */ Request $request)
     {

@@ -23,7 +23,7 @@ class VerificationController extends Controller
 			return redirect()->back()->with('message', __('auth::register.email_already_verified'));
 		}
 
-		send_verification_mail($user);
+		$user->sendEmailVerificationNotification();
 
 		return redirect()->back()->with('message', __('auth::register.email_sent'));
 	}
