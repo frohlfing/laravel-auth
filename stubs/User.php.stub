@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Traits\AccessesRules;
-use App\Traits\Searchable;
 use Carbon\Carbon;
+use FRohlfing\Base\Traits\AccessesRules;
+use FRohlfing\Base\Traits\Searchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -85,6 +85,20 @@ class User extends Authenticatable
         'confirmation_token',
         'remember_token',
         'api_token',
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * The supported (and meaningful) cast types are:
+     * int, float, string, bool, object, array, collection, date and datetime
+     *
+     * @var array
+     */
+    protected $casts = [
+        'rate_limit' => 'int',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**

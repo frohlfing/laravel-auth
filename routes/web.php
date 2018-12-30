@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-//Auth::routes(); // s. vendor/laravel/framework/src/Illuminate/Routing/Router.php (1129),  function auth()
+//Auth::routes(); // s. vendor/laravel/framework/src/Illuminate/Routing/Router.php (1129), function auth()
 
 ///////////////////////////////////////////////////////////////////////
 // Authentication
@@ -40,8 +40,6 @@ if (!Route::has('password.reset')) {
     Route::post('password/reset', '\FRohlfing\Auth\Http\Controllers\ResetPasswordController@reset');
 }
 
-// todo hier auth/ aus der URL nehmen
-
 ///////////////////////////////////////////////////////////////////////
 // Email Verification
 ///////////////////////////////////////////////////////////////////////
@@ -56,8 +54,6 @@ if (!Route::has('auth.verification.send')) {
         Route::get('auth/verification/send', '\FRohlfing\Auth\Http\Controllers\VerificationController@send')->name('auth.verification.send');
     });
 }
-
-// todo hier auth/ aus der URL nehmen
 
 ///////////////////////////////////////////////////////////////////////
 // Password Change

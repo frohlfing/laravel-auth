@@ -33,10 +33,7 @@
         "laravel": {
             "providers": [
                 "FRohlfing\\Auth\\AuthServiceProvider"
-            ],
-            "aliases": {
-                "AuthService": "FRohlfing\\Auth\\Facades\\AuthService"
-            }
+            ]
         }
     }
 }

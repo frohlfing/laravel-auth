@@ -112,7 +112,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Key
+    | User Key Attribute
     |--------------------------------------------------------------------------
     |
     | Determine which user attribute is used by the login (default: email).
