@@ -3,7 +3,7 @@
 namespace FRohlfing\Auth\Http\Controllers;
 
 use App\User;
-use App\Http\Controllers\Controller;
+use FRohlfing\Base\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +19,7 @@ class ManagementController extends Controller
      */
     public function index(Request $request, User $builder)
     {
-        $input = request()->input();
+        $input = $request->input();
 
         if (isset($input['search'])) {
             $builder = $builder->search($input['search']);

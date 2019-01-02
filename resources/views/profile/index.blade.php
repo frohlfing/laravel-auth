@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('auth::layouts.app')
 
 @section('title', __('auth::profile.title'))
 
@@ -27,8 +27,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @include('_message')
-                @include('_errors')
+                @include('base::_message')
+                @include('base::_errors')
                 <div class="card">
                     <div class="card-header">
                         {{ __('auth::profile.heading') }}
@@ -69,6 +69,7 @@
                                 @endif
                             </div>
                         </div>
+                        @includeIf('auth::profile._index')
                         @if(config('auth.manage_api'))
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3 highlight">
@@ -80,7 +81,7 @@
                                         {{ __('auth::profile.renew_api_token') }}
                                     </a>
                                     <button id="copy-button" type="button" class="btn btn-link" data-succesful="{{ __('auth::profile.copied_api_token') }}"  data-failed="{{ __('auth::profile.copy_failed') }}">
-                                        {{ __('common.buttons.copy') }}
+                                        {{ __('base::common.buttons.copy') }}
                                     </button>
                                 </div>
                             </div>
@@ -88,9 +89,9 @@
                         <hr/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-9 col-sm-offset-3">
-                                <a href="{{route('profile.edit')}}" class="btn btn-sm btn-info" title="{{ __('common.edit') }}">
+                                <a href="{{route('profile.edit')}}" class="btn btn-sm btn-info" title="{{ __('base::common.edit') }}">
                                     <i class="fas fa-pencil-alt"></i>
-                                    {{ __('common.buttons.edit') }}
+                                    {{ __('base::common.buttons.edit') }}
                                 </a>
                             </div>
                         </div>

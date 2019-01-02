@@ -253,7 +253,6 @@ return [
     'acl' => [
         'manage'        => ['master', 'admin'],
         'manage-users'  => ['master', 'admin'],
-        'manage-system' => ['master'],
     ],
 
 ];

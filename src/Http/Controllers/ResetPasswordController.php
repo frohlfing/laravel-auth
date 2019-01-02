@@ -2,8 +2,8 @@
 
 namespace FRohlfing\Auth\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\User;
+use FRohlfing\Base\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -81,7 +81,7 @@ class ResetPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $ok
-            ? $this->sendResetResponse($response)
+            ? $this->sendResetResponse($request, $response)
             : $this->sendResetFailedResponse($request, $response);
     }
 

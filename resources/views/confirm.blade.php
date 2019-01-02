@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('auth::layouts.app')
 
 @section('title', __('auth::confirm.title'))
 

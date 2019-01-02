@@ -1,0 +1,1 @@
+@extends('base::layouts.app')

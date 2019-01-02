@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('auth::layouts.app')
 
 @section('title', __('auth::register.title'))
 
@@ -8,7 +8,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        {{ __('Register') }}
+                        {{ __('auth::register.heading') }}
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('register') }}" aria-label="{{ __('auth::register.heading') }}">
