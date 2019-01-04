@@ -2,13 +2,13 @@
     <!-- Guest Menu Items-->
     <li class="nav-item">
         <a class="nav-link {{ is_active('login') ? 'active' : '' }}" href="{{ url('login') }}">
-            <i class="fas fa-sign-in-alt"></i> {{ __('app.nav.login') }}
+            <i class="fas fa-sign-in-alt"></i> {{ __('auth::nav.login') }}
         </a>
     </li>
     @if(config('auth.registration'))
         <li class="nav-item {{ is_active('register') ? 'active' : '' }}">
             <a class="nav-link" href="{{ url('register') }}">
-                <i class="fas fa-arrow-circle-right"></i> {{ __('app.nav.register') }}
+                <i class="fas fa-arrow-circle-right"></i> {{ __('auth::nav.register') }}
             </a>
         </li>
     @endif
@@ -20,14 +20,14 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <a class="dropdown-item {{ is_active('profile') ? 'active' : '' }}" href="{{ url('profile') }}">
-                <i class="fas fa-user"></i> {{__('app.nav.profile')}}
+                <i class="fas fa-user"></i> {{__('auth::nav.profile')}}
             </a>
             <a class="dropdown-item {{ is_active('auth/password/change') ? 'active' : '' }}" href="{{ url('auth/password/change') }}">
-                <i class="fas fa-key"></i> {{__('app.nav.change_password')}}
+                <i class="fas fa-key"></i> {{__('auth::nav.change_password')}}
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item {{ is_active('logout') ? 'active' : '' }}" href="{{ url('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fas fa-sign-out-alt"></i> {{ __('app.nav.logout') }}
+                <i class="fas fa-sign-out-alt"></i> {{ __('auth::nav.logout') }}
             </a>
             <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
                 @csrf

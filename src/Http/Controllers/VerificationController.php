@@ -2,7 +2,7 @@
 
 namespace FRohlfing\Auth\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use FRohlfing\Base\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 

@@ -12,8 +12,6 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Indicates if loading of the provider is deferred.
      *
-     * Wenn das Package Routen beinhaltet, muss hier false stehen!
-     *
      * @var bool
      */
     protected $defer = false;
@@ -42,33 +40,30 @@ class AuthServiceProvider extends ServiceProvider
         // config
         $this->publishes([__DIR__ . '/../config/auth.php' => config_path('auth.php')], 'config');
 
-        // routes
-        Route::middleware(['web'])->group(function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        });
-
-        // migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], 'migrations');
-
-        // translation (e.g.: echo trans('auth::messages.welcome'))
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'auth');
-        $this->publishes([__DIR__ . '/../resources/lang/' => resource_path('lang/vendor/auth')], 'lang');
+        // model
+        $this->publishes([__DIR__ . '/../stubs/User.php.stub' => app_path('User.php')], 'models');
 
         // views (e.g. view('auth::index'))
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'auth');
         $this->publishes([__DIR__ . '/../resources/views' => resource_path('views/vendor/auth')], 'views');
 
-        // assets
-        //$this->publishes([__DIR__ . '/../public' => public_path('vendor/auth')], 'public');
+        // translation (e.g.: echo trans('auth::messages.welcome'))
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'auth');
+        $this->publishes([__DIR__ . '/../resources/lang/' => resource_path('lang/vendor/auth')], 'lang');
 
-        // model
-        $this->publishes([__DIR__ . '/../resources/stubs/User.php.stub' => app_path('User.php')], 'models');
+        // migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->publishes([__DIR__ . '/../database/migrations' => database_path('migrations')], 'migrations');
 
         // commands
         if ($this->app->runningInConsole()) {
             $this->commands([AddUserCommand::class]);
         }
+
+        // routes
+        Route::middleware(['web'])->group(function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        });
 
         // load ACL
         $this->registerAbilities();

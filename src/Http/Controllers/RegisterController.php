@@ -3,7 +3,7 @@
 namespace FRohlfing\Auth\Http\Controllers;
 
 use App\User;
-use App\Http\Controllers\Controller;
+use FRohlfing\Base\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -41,6 +41,7 @@ class RegisterController extends Controller
         }
 
         $this->middleware('guest');
+
         $this->redirectTo = config('auth.redirect_to_after_register', '');
     }
 
@@ -102,11 +103,10 @@ class RegisterController extends Controller
      * The user has been registered.
      *
      * @param \Illuminate\Http\Request $request
-     * @param mixed $user
+     * @param User $user
      */
     protected function registered(/** @noinspection PhpUnusedParameterInspection */ Request $request, $user)
     {
-        /** @var \App\User $user */
         $user->sendEmailVerificationNotification();
     }
 }

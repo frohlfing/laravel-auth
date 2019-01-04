@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('auth::layouts.app')
 
 @section('title', __('auth::verify.title'))
 
@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                {{--@include('_message')--}}
+                {{--@include('base::_message')--}}
                 <div class="card">
                     <div class="card-header">{{ __('auth::verify.heading') }}</div>
                     <div class="card-body">

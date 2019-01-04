@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('auth::layouts.app')
 
 @section('title', __('auth::profile.title'))
 
@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                {{--@include('_errors')--}}
+                {{--@include('base::_errors')--}}
                 <div class="card">
                     <div class="card-header">
                         {{ __('auth::profile.heading') }}
@@ -62,6 +62,7 @@
                                     @endif
                                 </div>
                             </div>
+                            @includeIf('auth::profile._form')
                             {{--<div class="form-group row">--}}
                                 {{--<label for="api_token" class="col-md-4 col-form-label text-md-right">--}}
                                     {{--{{ __('auth::model.api_token') }}--}}
@@ -79,10 +80,10 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('common.buttons.save') }}
+                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('base::common.buttons.save') }}
                                     </button>
                                     <a href="{{route('profile.index') }}" class="btn btn-secondary">
-                                        {{ __('common.buttons.cancel') }}
+                                        {{ __('base::common.buttons.cancel') }}
                                     </a>
                                 </div>
                             </div>

@@ -2,7 +2,7 @@
 
 namespace FRohlfing\Auth\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use FRohlfing\Base\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

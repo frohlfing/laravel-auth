@@ -112,7 +112,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Key
+    | User Key Attribute
     |--------------------------------------------------------------------------
     |
     | Determine which user attribute is used by the login (default: email).
@@ -150,7 +150,7 @@ return [
     | Forgot Password Feature
     |--------------------------------------------------------------------------
     |
-    | Where to redirect users after successful operation.
+    | Where users are redirected after successful operation.
     |
     */
 
@@ -254,7 +254,6 @@ return [
     'acl' => [
         'manage'        => ['master', 'admin'],
         'manage-users'  => ['master', 'admin'],
-        'manage-system' => ['master'],
     ],
 
 ];

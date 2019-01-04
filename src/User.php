@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace FRohlfing\Auth;
 
-use App\Traits\AccessesRules;
-use App\Traits\Searchable;
 use Carbon\Carbon;
+use FRohlfing\Base\Traits\AccessesRules;
+use FRohlfing\Base\Traits\Searchable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Mail;
 
 /**
- * App\User
+ * FRohlfing\Auth\User
  *
  * @property integer $id
  * @property string $name
@@ -87,6 +87,21 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * The attributes that should be casted to native types.
+     *
+     * The supported (and meaningful) cast types are:
+     * int, float, string, bool, object, array, collection, date and datetime
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'rate_limit' => 'int',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
      * Searchable fields.
      *
      * @var array
@@ -111,6 +126,48 @@ class User extends Authenticatable implements MustVerifyEmail
         'role'       => 'required|max:16',
         'rate_limit' => 'int|nullable',
     ];
+
+//    /**
+//     * The booting method of the model
+//     */
+//    public static function boot()
+//    {
+//        parent::boot();
+//
+//        // Attach event handler, on creating or updating of the user
+//		//static::saving(function($user) {
+//		//	/** @var self $user */
+//		//});
+//
+//        // Attach event handler, on creating of the user
+//        //static::creating(function($user) {
+//        //    /** @var self $user */
+//        //});
+//
+//        // Attach event handler, on updating of the user
+//        static::updating(function($user) {
+//            /** @var self $user */
+//            if (Auth::guest()) {
+//                abort(403);
+//            }
+//            /** @var self $currUser */
+//            $currUser = Auth::user();
+//            if ($currUser === $user){
+//                if ($user->isDirty('role')) {
+//                //if ($user->role !== $user->getOriginal('role')) {
+//                    abort(403);
+//                }
+//            }
+//            else {
+//                if ($currUser->cannot('manage-users')) {
+//                    abort(403);
+//                }
+//                if ($user->role > $currUser->role) {
+//                    abort(403);
+//                }
+//            }
+//        });
+//    }
 
     /**
      * The channels the user receives notification broadcasts on.

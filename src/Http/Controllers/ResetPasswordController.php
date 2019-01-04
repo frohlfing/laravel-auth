@@ -2,8 +2,8 @@
 
 namespace FRohlfing\Auth\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\User;
+use FRohlfing\Base\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;

@@ -29,18 +29,24 @@ Download this package by running the following command:
 
     composer require frohlfing/laravel-auth:1.57.*@dev
     
+Override the configuration file to `config/auth.php`:
+        
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=config --force
+    
 Override the `User` model:
 
-    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=models    
+    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=models --force   
        
-Copy the configuration file to `config/auth.php`:
-        
-    php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=config
-    
-Set the authentication key in the configuration file, then run the database migration:
+Set the User Key Attribute in the configuration file, then run the database migration:
         
     php artisan migrate
+
+You can delete the following files because they are no longer in use:            
             
+- `app/Http/Controllers/Auth/`
+- `resources/lang/en/auth.php`
+- `resources/lang/en/password.php`
+                  
 ## Customize
     
 ### Views
@@ -55,7 +61,7 @@ this folder which are included by the existing views.
 
 ### Translation
 
-If you want to change the translation, publish the language files:
+If you want to change the translation, publish the language files to `resources/lang/vendor/auth`:
 
     php artisan vendor:publish --provider="FRohlfing\Auth\AuthServiceProvider" --tag=lang
     
@@ -76,7 +82,7 @@ You may insert the personal menu items items to login and logout like this:
     
 ## Middleware
 
-This package provides a middleware `CheckRole`. Register them in `app/Http/Kerel.php`:    
+This package provides the middleware `CheckRole`. Register them in `app/Http/Kerel.php`:    
 
     protected $routeMiddleware = [
         'role' => \FRohlfing\Auth\Http\Middleware\CheckRole::class,

@@ -40,8 +40,6 @@ if (!Route::has('password.reset')) {
     Route::post('password/reset', '\FRohlfing\Auth\Http\Controllers\ResetPasswordController@reset')->name('password.update');
 }
 
-// todo hier auth/ aus der URL nehmen
-
 ///////////////////////////////////////////////////////////////////////
 // Email Verification
 ///////////////////////////////////////////////////////////////////////
@@ -58,8 +56,6 @@ if (!Route::has('verification.resend')) {
         Route::get('email/resend', '\FRohlfing\Auth\Http\Controllers\VerificationController@resend')->name('verification.resend');
     });
 }
-
-// todo hier auth/ aus der URL nehmen
 
 ///////////////////////////////////////////////////////////////////////
 // Password Change
