@@ -59,7 +59,7 @@ class AddUserCommand extends Command
             ' . ($key !== 'email' ? '{ --m|email= : E-Mail Address (default: <' . $key . '>@local) }' : '') . '
             { --r|role= : User role (default: ' . config('auth.roles.0') . ') }
             { --t|api_token= : API token (default: generated string) }
-            { --l|rate_limit= : Rate Limit (default: ' . config('api.rate_limit') . ') }';
+            { --l|rate_limit= : Rate Limit (default: ' . config('auth.rate_limit') . ') }';
 
         //$this->signature = str_replace(' name : Display Name', ' email2 : E-Mail', $this->signature);
 
@@ -86,7 +86,7 @@ class AddUserCommand extends Command
             }
             $user->role       = !empty($data['role']) ? $data['role'] : config('auth.roles.0');
             $user->api_token  = !empty($data['api_token']) ? $data['api_token'] : str_unique_random(60);
-            $user->rate_limit = !empty($data['rate_limit']) ? $data['rate_limit'] : config('api.rate_limit');
+            $user->rate_limit = !empty($data['rate_limit']) ? $data['rate_limit'] : config('auth.rate_limit');
             $user->save();
         }
         catch (\Exception $e) {

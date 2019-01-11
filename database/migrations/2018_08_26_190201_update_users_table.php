@@ -72,7 +72,7 @@ class UpdateUsersTable extends Migration
             }
 
             if ($user->rate_limit === null) {
-                $data['rate_limit'] = config('api.rate_limit');
+                $data['rate_limit'] = config('auth.rate_limit');
             }
 
             if ($key !== 'email' && empty($user->{$key})) {

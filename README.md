@@ -96,13 +96,13 @@ After then you could use the middleware to check the role of the current user:
     
 Or check the ability of the user as follows:
     
-    Route::middleware(['can:manage-users'])->group(function () {
+    Route::middleware(['auth', 'can:manage-users'])->group(function () {
         ...
     });
 
 Write this to make sure the email address has been verified:
 
-    Route::middleware(['verified'])->group(function () {
+    Route::middleware(['auth', 'verified'])->group(function () {
         ...
     });
 

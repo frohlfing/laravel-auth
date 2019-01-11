@@ -87,7 +87,7 @@ class RegisterController extends Controller
         $user->password   = bcrypt($data['password']);
         $user->role       = config('auth.roles.0');
         $user->api_token  = str_unique_random(60);
-        $user->rate_limit = config('api.rate_limit');
+        $user->rate_limit = config('auth.rate_limit');
 
         $key = config('auth.key');
         if ($key !== 'email') {

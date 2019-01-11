@@ -52,7 +52,12 @@ class ManagementController extends Controller
      */
     public function create()
     {
-        return view('auth::management.form', ['user' => new User]);
+        $user = new User;
+        if (config('auth.manage_api')) {
+            $user->rate_limit = config('auth.rate_limit');
+        }
+
+        return view('auth::management.form', compact('user'));
     }
 
     /**
@@ -74,16 +79,23 @@ class ManagementController extends Controller
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
-        $input['password'] = bcrypt($input['password']);
-
-        /** @var User $user */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $user = $user->create($input);
-
-        // email_verified_at and api_token must be explicitly assigned because it does not belong to the fillable fields
+        $user = new User;
+        $user->name       = $input['name'];
+        $user->email      = $input['email'];
         $user->email_verified_at = $user->freshTimestamp();
-        $user->api_token = str_unique_random(60);
+        $user->password   = bcrypt($input['password']);
+        $user->role       = $input['role'];
+        $user->api_token  = str_unique_random(60);
+        $user->rate_limit = $input['rate_limit'];
+
+        $key = config('auth.key');
+        if ($key !== 'email') {
+            $user->setAttribute($key, $input[$key]);
+        }
+
         $user->save();
+
+        $user->update($input);
 
         return redirect('admin/users')->with('message', __('auth::management.form.successful_created'));
     }

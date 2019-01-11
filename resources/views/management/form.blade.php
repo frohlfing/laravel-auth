@@ -12,6 +12,7 @@
             <div class="col-md-8">
                 <div>
                     @include('base::_message')
+                    {{--@include('base::_errors')--}}
                 </div>
                 <div class="card">
                     <div class="card-header">

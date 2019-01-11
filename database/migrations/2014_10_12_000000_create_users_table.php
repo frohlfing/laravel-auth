@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             //$table->string('role', 16);
-            //$table->string('api_token', 60)->unique()->nullable();
+            //$table->string('api_token', 60)->unique();
             //$table->integer('rate_limit')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -206,7 +206,7 @@ return [
     | API-Token
     |--------------------------------------------------------------------------
     |
-    | Set this option to manage the api token and api_rate_limit.
+    | Set this option to manage the api token and rate_limit.
     |
     */
 
@@ -222,7 +222,7 @@ return [
     |
     */
 
-    'api_rate_limit' => 60,
+    'rate_limit' => 60,
 
     /*
     |--------------------------------------------------------------------------
