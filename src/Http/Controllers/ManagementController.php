@@ -4,22 +4,27 @@ namespace FRohlfing\Auth\Http\Controllers;
 
 use App\User;
 use FRohlfing\Base\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class ManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param User $builder
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @return View
      */
-    public function index(Request $request, User $builder)
+    public function index(Request $request)
     {
         $input = $request->input();
+
+        /** @var User|Builder $builder */
+        $builder = User::query();
 
         if (isset($input['search'])) {
             $builder = $builder->search($input['search']);
@@ -29,7 +34,12 @@ class ManagementController extends Controller
             $builder = $builder->orderBy($input['sort_by'], isset($input['sort_order']) ? $input['sort_order'] : 'asc');
         }
 
-        $users = $builder->paginate(config('auth::per_page'))->appends($input);
+        $perPage = config('auth.per_page', 100);
+        if (isset($input['per_page']) && $input['per_page'] * 1 < $perPage) {
+            $perPage = $input['per_page'];
+        }
+
+        $users = $builder->paginate($perPage)->appends($input);
 
         return view('auth::management.index', compact('users'));
     }
@@ -37,8 +47,8 @@ class ManagementController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\User $user
-     * @return \Illuminate\View\View
+     * @param User $user
+     * @return View
      */
     public function show(User $user)
     {
@@ -48,7 +58,7 @@ class ManagementController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -63,9 +73,9 @@ class ManagementController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param User $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request, User $user)
     {
@@ -103,8 +113,8 @@ class ManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\User $user
-     * @return \Illuminate\View\View
+     * @param User $user
+     * @return View
      */
     public function edit(User $user)
     {
@@ -119,7 +129,7 @@ class ManagementController extends Controller
      * Clone the given model and shows the edit view.
      *
      * @param \App\User $user
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function replicate(User $user)
     {
@@ -135,11 +145,11 @@ class ManagementController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request  $request
-     * @param \App\User $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request  $request
+     * @param User $user
+     * @return RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function updqate(Request $request, User $user)
     {
         if (is_superior($request->input('role')) || is_superior($user)) {
             abort(Response::HTTP_FORBIDDEN);
@@ -170,8 +180,8 @@ class ManagementController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\User $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @param User $user
+     * @return RedirectResponse
      * @throws \Exception
      */
     public function destroy(User $user)
@@ -188,8 +198,8 @@ class ManagementController extends Controller
     /**
      * Verify the email address.
      *
-     * @param \App\User $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @param User $user
+     * @return RedirectResponse
      */
     public function verify(User $user)
     {
