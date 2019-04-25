@@ -3,7 +3,7 @@
 namespace FRohlfing\Auth\Http\Controllers;
 
 use App\User;
-use FRohlfing\Base\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;

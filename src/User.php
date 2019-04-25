@@ -3,8 +3,8 @@
 namespace FRohlfing\Auth;
 
 use Carbon\Carbon;
-use FRohlfing\Base\Traits\AccessesRules;
-use FRohlfing\Base\Traits\Searchable;
+use App\Traits\AccessesRules;
+use App\Traits\Searchable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;

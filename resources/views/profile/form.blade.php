@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                {{--@include('base::_errors')--}}
+                {{--@include('_errors')--}}
                 <div class="card">
                     <div class="card-header">
                         {{ __('auth::profile.heading') }}
@@ -80,10 +80,10 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('base::common.buttons.save') }}
+                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('.buttons.save') }}
                                     </button>
                                     <a href="{{route('profile.index') }}" class="btn btn-secondary">
-                                        {{ __('base::common.buttons.cancel') }}
+                                        {{ __('.buttons.cancel') }}
                                     </a>
                                 </div>
                             </div>
