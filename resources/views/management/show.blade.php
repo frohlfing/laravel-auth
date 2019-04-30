@@ -96,12 +96,12 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-9 col-sm-offset-3">
                                 @if(!is_superior($user))
-                                    <a href="{{ route('admin.users.edit', [$user->id]) }}" class="btn btn-sm btn-info" title="{{ __('base::common.edit') }}">
+                                    <a href="{{ route('admin.users.edit', [$user->id]) }}" class="btn btn-sm btn-info" title="{{ __('common.edit') }}">
                                         <i class="fas fa-pencil-alt"></i>
-                                        {{ __('base::common.buttons.edit') }}
+                                        {{ __('common.buttons.edit') }}
                                     </a>
                                 @endif
-                                <a href="{{route('admin.users.index')}}" class="btn btn-sm btn-secondary">{{__('base::common.buttons.back')}}</a>
+                                <a href="{{route('admin.users.index')}}" class="btn btn-sm btn-secondary">{{__('common.buttons.back')}}</a>
                             </div>
                         </div>
                     </div>
