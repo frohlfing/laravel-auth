@@ -115,12 +115,23 @@ return [
     | User Key Attribute
     |--------------------------------------------------------------------------
     |
-    | Determine which user attribute is used by the login (default: email).
+    | Determine whether email or username is used by the login.
     |
     */
 
     'key' => 'email',
     //'key' => 'username',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hide Username
+    |--------------------------------------------------------------------------
+    |
+    | Set this option if no username is used.
+    |
+    */
+
+    'hide_username' => true,
 
     /*
     |--------------------------------------------------------------------------

@@ -27,13 +27,13 @@
                                 {{ $user->name }}
                             </div>
                         </div>
-                        @if (config('auth.key') !== 'email')
+                        @if (!config('auth.hide_username'))
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4 highlight">
-                                    {{ __('auth::model.' . config('auth.key')) }}
+                                    {{ __('auth::model.username') }}
                                 </div>
                                 <div class="col-xs-12 col-sm-8">
-                                    {{ $user->getAttribute(config('auth.key')) }}
+                                    {{ $user->username }}
                                 </div>
                             </div>
                         @endif
@@ -96,12 +96,12 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-9 col-sm-offset-3">
                                 @if(!is_superior($user))
-                                    <a href="{{ route('admin.users.edit', [$user->id]) }}" class="btn btn-sm btn-info" title="{{ __('.edit') }}">
+                                    <a href="{{ route('admin.users.edit', [$user->id]) }}" class="btn btn-sm btn-info" title="{{ __('common.edit') }}">
                                         <i class="fas fa-pencil-alt"></i>
-                                        {{ __('.buttons.edit') }}
+                                        {{ __('common.buttons.edit') }}
                                     </a>
                                 @endif
-                                <a href="{{route('admin.users.index')}}" class="btn btn-sm btn-secondary">{{__('.buttons.back')}}</a>
+                                <a href="{{route('admin.users.index')}}" class="btn btn-sm btn-secondary">{{__('common.buttons.back')}}</a>
                             </div>
                         </div>
                     </div>

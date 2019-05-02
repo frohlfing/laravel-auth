@@ -46,12 +46,10 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $keys = ['email', 'password', 'role'];
-        if (config('auth.key') !== 'email') {
-            $keys[] = config('auth.key');
-        }
+        $keys = ['username', 'email', 'password', 'role'];
         $inputs = $request->except($keys);
-        $validator = Validator::make($inputs, array_except($user->getRules(), $keys), [], __('auth::model'));
+        $rules = array_except($user->getRules(), $keys);
+        $validator = Validator::make($inputs, $rules, [], __('auth::model'));
         if ($validator->fails()) {
             return Redirect::route('profile.edit')->withInput()->withErrors($validator);
         }

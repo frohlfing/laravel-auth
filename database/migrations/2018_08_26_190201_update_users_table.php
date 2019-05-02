@@ -14,15 +14,13 @@ class UpdateUsersTable extends Migration
      */
     public function up()
     {
-        $key = config('auth.key');
-
         // 1. Add columns and simple indexes.
 
         // Note: We set default = '' to avoid the following error that occurs with SQLite and Laravel 5.6:
         // "Cannot add a NOT NULL column with default value NULL"
         $driver = Schema::connection($this->getConnection())->getConnection()->getDriverName();
 
-        Schema::table('users', function (Blueprint $table) use ($driver, $key) {
+        Schema::table('users', function (Blueprint $table) use ($driver) {
             /** @noinspection PhpUndefinedMethodInspection */
             if (!Schema::hasColumn('users', 'email_verified_at')) { // should exist since Laravel 5.7 by default
                 /** @noinspection PhpUndefinedMethodInspection */
@@ -48,9 +46,9 @@ class UpdateUsersTable extends Migration
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
-            if ($key !== 'email' && !Schema::hasColumn('users', $key)) {
+            if (!Schema::hasColumn('users', 'username')) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $table->string($key)->default($driver === 'sqlite' ? '' : null)->after('name');
+                $table->string('username')->default($driver === 'sqlite' ? '' : null)->after('name');
             }
         });
 
@@ -75,8 +73,8 @@ class UpdateUsersTable extends Migration
                 $data['rate_limit'] = config('auth.rate_limit');
             }
 
-            if ($key !== 'email' && empty($user->{$key})) {
-                $data[$key] = uniqid();
+            if (empty($user->{'username'})) {
+                $data['username'] = uniqid();
             }
 
             if (!empty($data)) {
@@ -86,7 +84,7 @@ class UpdateUsersTable extends Migration
 
         // 3. Reset the default definition and set unique indexes.
 
-        Schema::table('users', function (Blueprint $table) use ($driver, $key) {
+        Schema::table('users', function (Blueprint $table) use ($driver) {
             // Reset default constrains.
 
             if ($driver === 'sqlite') {
@@ -96,10 +94,8 @@ class UpdateUsersTable extends Migration
                 /** @noinspection PhpUndefinedMethodInspection */
                 $table->string('api_token')->default(null)->change();
 
-                if ($key !== 'email') {
-                    /** @noinspection PhpUndefinedMethodInspection */
-                    $table->string($key)->default(null)->change();
-                }
+                /** @noinspection PhpUndefinedMethodInspection */
+                $table->string('username')->default(null)->change();
             }
 
             // Set unique indexes.
@@ -118,8 +114,8 @@ class UpdateUsersTable extends Migration
                 $table->unique(['api_token']);
             }
 
-            if ($key !== 'email' && !isset($indexes["users_{$key}_unique"])) {
-                $table->unique([$key]);
+            if (!isset($indexes['users_username_unique'])) {
+                $table->unique(['username']);
             }
         });
 
@@ -158,10 +154,9 @@ class UpdateUsersTable extends Migration
 //                $table->dropColumn('rate_limit');
 //            }
 //
-//            $key = config('auth.key');
 //            /** @noinspection PhpUndefinedMethodInspection */
-//            if ($key !== 'email' && Schema::hasColumn('users', $key)) {
-//                $table->dropColumn($key);
+//            if (Schema::hasColumn('users', 'username')) {
+//                $table->dropColumn('username');
 //            }
 //        });
 
@@ -186,10 +181,9 @@ class UpdateUsersTable extends Migration
             }
         });
         Schema::table('users', function (Blueprint $table) {
-            $key = config('auth.key');
             /** @noinspection PhpUndefinedMethodInspection */
-            if ($key !== 'email' && Schema::hasColumn('users', $key)) {
-                $table->dropColumn($key);
+            if (Schema::hasColumn('users', 'username')) {
+                $table->dropColumn('username');
             }
         });
     }

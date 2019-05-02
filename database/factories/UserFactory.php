@@ -19,6 +19,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 
     $data = [
         'name' => $faker->name,
+        'username' => $faker->unique()->userName,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => $faker->randomElement([null, $updatet_at]),
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
@@ -29,11 +30,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'created_at' => $faker->dateTime($updatet_at),
         'updated_at' => $updatet_at,
     ];
-
-    $key = config('auth.key');
-    if ($key !== 'email') {
-        $data[$key] = $faker->unique()->userName;
-    }
 
     return $data;
 });

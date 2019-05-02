@@ -38,13 +38,13 @@
                                     @endif
                                 </div>
                             </div>
-                            @if(config('auth.key') !== 'email')
+                            @if(!config('auth.hide_username'))
                                 <div class="form-group row">
-                                    <label for="{{ config('auth.key') }}" class="col-md-4 col-form-label text-md-right">
-                                        {{ __('auth::model.' . config('auth.key')) }}
+                                    <label for="username" class="col-md-4 col-form-label text-md-right">
+                                        {{ __('auth::model.username') }}
                                     </label>
                                     <div class="col-md-6">
-                                        <input id="{{ config('auth.key') }}" value="{{ $user->getAttribute(config('auth.key')) }}" type="text" class="form-control" readonly="readonly"/>
+                                        <input id="username" value="{{ $user->username }}" type="text" class="form-control" readonly="readonly"/>
                                     </div>
                                 </div>
                             @endif
@@ -53,7 +53,7 @@
                                     {{ __('auth::model.email') }}
                                 </label>
                                 <div class="col-md-6">
-                                    <input id="email" value="{{$user->email}}" type="email" class="form-control" readonly="readonly"/>
+                                    <input id="email" value="{{ $user->email }}" type="email" class="form-control" readonly="readonly"/>
                                     @if(!$user->hasVerifiedEmail())
                                         <div style="padding-top: 5px">
                                             <i class="fas fa-exclamation-circle" style="color:red" title="{{ __('auth::profile.email_not_verified') }}"></i>
@@ -80,10 +80,10 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('.buttons.save') }}
+                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('common.buttons.save') }}
                                     </button>
                                     <a href="{{route('profile.index') }}" class="btn btn-secondary">
-                                        {{ __('.buttons.cancel') }}
+                                        {{ __('common.buttons.cancel') }}
                                     </a>
                                 </div>
                             </div>

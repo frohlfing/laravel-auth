@@ -37,16 +37,16 @@
                                     @endif
                                 </div>
                             </div>
-                            @if (config('auth.key') !== 'email')
+                            @if (!config('auth.hide_username'))
                                 <div class="form-group row">
-                                    <label for="{{ config('auth.key') }}" class="col-md-4 col-form-label text-md-right">
-                                        {{ __('auth::model.' . config('auth.key')) }}
+                                    <label for="username" class="col-md-4 col-form-label text-md-right">
+                                        {{ __('auth::model.username') }}
                                     </label>
                                     <div class="col-md-6">
-                                        <input id="{{ config('auth.key') }}" name="{{ config('auth.key') }}" value="{{ old(config('auth.key'), $user->getAttribute(config('auth.key'))) }}" type="text" maxlength="255" required="required" class="form-control{{ $errors->has(config('auth.key')) ? ' is-invalid' : '' }}" placeholder="{{ __('auth::model.' . config('auth.key')) }}"/>
-                                        @if($errors->has(config('auth.key')))
+                                        <input id="username" name="username" value="{{ old('username', $user->username) }}" type="text" maxlength="255" required="required" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="{{ __('auth::model.username') }}"/>
+                                        @if($errors->has('username'))
                                             <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first(config('auth.key')) }}</strong>
+                                            <strong>{{ $errors->first('username') }}</strong>
                                         </span>
                                         @endif
                                     </div>
@@ -117,7 +117,7 @@
                                                 {{ __('auth::model.password') }}
                                             </label>
                                             <div class="col-md-6">
-                                                <input id="password" name="password" type="password" minlength="{{ config('auth.password_length') }}" maxlength="255" class="password-meter form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('auth::model.password') }}"/>
+                                                <input id="password" name="password" type="password" value="{{ old('password') }}" autocomplete="new-password" minlength="{{ config('auth.password_length') }}" maxlength="255" class="password-meter form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('auth::model.password') }}"/>
                                                 @if($errors->has('password'))
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $errors->first('password') }}</strong>
@@ -146,10 +146,10 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('.buttons.save') }}
+                                        <i class="fas fa-save" aria-hidden="true"></i> {{ __('common.buttons.save') }}
                                     </button>
                                     <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
-                                        {{ __('.buttons.cancel') }}
+                                        {{ __('common.buttons.cancel') }}
                                     </a>
                                 </div>
                             </div>

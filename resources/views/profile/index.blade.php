@@ -39,16 +39,16 @@
                                 {{ __('auth::model.name') }}
                             </div>
                             <div class="col-xs-12 col-sm-9">
-                                {{$user->name}}
+                                {{ $user->name }}
                             </div>
                         </div>
-                        @if (config('auth.key') !== 'email')
+                        @if (!config('auth.hide_username'))
                             <div class="row">
                                 <div class="col-xs-12 col-sm-3 highlight">
-                                    {{ __('auth::model.' . config('auth.key')) }}
+                                    {{ __('auth::model.username') }}
                                 </div>
                                 <div class="col-xs-12 col-sm-9">
-                                    {{ $user->getAttribute(config('auth.key')) }}
+                                    {{ $user->username }}
                                 </div>
                             </div>
                         @endif
@@ -81,7 +81,7 @@
                                         {{ __('auth::profile.renew_api_token') }}
                                     </a>
                                     <button id="copy-button" type="button" class="btn btn-link" data-succesful="{{ __('auth::profile.copied_api_token') }}"  data-failed="{{ __('auth::profile.copy_failed') }}">
-                                        {{ __('.buttons.copy') }}
+                                        {{ __('common.buttons.copy') }}
                                     </button>
                                 </div>
                             </div>
@@ -89,9 +89,9 @@
                         <hr/>
                         <div class="row">
                             <div class="col-xs-12 col-sm-9 col-sm-offset-3">
-                                <a href="{{route('profile.edit')}}" class="btn btn-sm btn-info" title="{{ __('.edit') }}">
+                                <a href="{{route('profile.edit')}}" class="btn btn-sm btn-info" title="{{ __('common.edit') }}">
                                     <i class="fas fa-pencil-alt"></i>
-                                    {{ __('.buttons.edit') }}
+                                    {{ __('common.buttons.edit') }}
                                 </a>
                             </div>
                         </div>

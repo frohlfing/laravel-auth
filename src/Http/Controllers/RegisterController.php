@@ -64,8 +64,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $keys = ['name', 'email', 'password'];
-        if (config('auth.key') !== 'email') {
-            $keys[] = config('auth.key');
+        if (!config('auth.hide_username')) {
+            $keys[] = 'username';
         }
 
         $rules = array_only(User::rules(), $keys);
@@ -83,16 +83,12 @@ class RegisterController extends Controller
     {
         $user = new User;
         $user->name       = $data['name'];
+        $user->username   = !config('auth.hide_username') ? $data['username'] : uniqid('u');
         $user->email      = $data['email'];
         $user->password   = bcrypt($data['password']);
         $user->role       = config('auth.roles.0');
         $user->api_token  = str_unique_random(60);
         $user->rate_limit = config('auth.rate_limit');
-
-        $key = config('auth.key');
-        if ($key !== 'email') {
-            $user->setAttribute($key, $data[$key]);
-        }
 
         $user->save();
 

@@ -24,16 +24,16 @@
                                     @endif
                                 </div>
                             </div>
-                            @if (config('auth.key') !== 'email')
+                            @if (!config('auth.hide_username'))
                                 <div class="form-group row">
-                                    <label for="{{ config('auth.key') }}" class="col-md-4 col-form-label text-md-right">
-                                        {{ __('auth::model.' . config('auth.key')) }}
+                                    <label for="username" class="col-md-4 col-form-label text-md-right">
+                                        {{ __('auth::model.username') }}
                                     </label>
                                     <div class="col-md-6">
-                                        <input id="{{ config('auth.key') }}" name="{{ config('auth.key') }}" type="text" value="{{ old(config('auth.key')) }}" maxlength="255" required="required" class="form-control{{ $errors->has(config('auth.key')) ? ' is-invalid' : '' }}"/>
-                                        @if($errors->has(config('auth.key')))
+                                        <input id="username" name="username" type="text" value="{{ old('username') }}" maxlength="255" required="required" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}"/>
+                                        @if($errors->has('username'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first(config('auth.key')) }}</strong>
+                                                <strong>{{ $errors->first('username') }}</strong>
                                             </span>
                                         @endif
                                     </div>

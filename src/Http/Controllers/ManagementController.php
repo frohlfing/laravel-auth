@@ -83,14 +83,20 @@ class ManagementController extends Controller
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        $input = $request->input();
-        $validator = Validator::make($input, $user->getRules(), [], __('auth::model'));
+        $keys = [];
+        if (config('auth.hide_username')) {
+            $keys[] = 'username';
+        }
+        $input = $request->except($keys);
+        $rules = array_except($user->getRules(), $keys);
+        $validator = Validator::make($input, $rules, [], __('auth::model'));
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
         }
 
         $user = new User;
         $user->name       = $input['name'];
+        $user->username   = !config('auth.hide_username') ? $input['username'] : uniqid('u');
         $user->email      = $input['email'];
         $user->email_verified_at = $user->freshTimestamp();
         $user->password   = bcrypt($input['password']);
@@ -98,14 +104,7 @@ class ManagementController extends Controller
         $user->api_token  = str_unique_random(60);
         $user->rate_limit = $input['rate_limit'];
 
-        $key = config('auth.key');
-        if ($key !== 'email') {
-            $user->setAttribute($key, $input[$key]);
-        }
-
         $user->save();
-
-        $user->update($input);
 
         return redirect('admin/users')->with('message', __('auth::management.form.successful_created'));
     }
@@ -149,20 +148,23 @@ class ManagementController extends Controller
      * @param User $user
      * @return RedirectResponse
      */
-    public function updqate(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
         if (is_superior($request->input('role')) || is_superior($user)) {
             abort(Response::HTTP_FORBIDDEN);
         }
 
+        $keys = [];
+        if (config('auth.hide_username')) {
+            $keys[] = 'username';
+        }
         if (empty($request->input('password'))) {
-            $input = $request->except(['password', 'password_confirmation']);
-            $validator = Validator::make($input, array_except($user->getRules(), 'password'), [], __('auth::model'));
+            $keys[] = 'password';
+            $keys[] = 'password_confirmation';
         }
-        else {
-            $input = $request->input();
-            $validator = Validator::make($input, $user->getRules(), [], __('auth::model'));
-        }
+        $input = $request->except($keys);
+        $rules = array_except($user->getRules(), $keys);
+        $validator = Validator::make($input, $rules, [], __('auth::model'));
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);

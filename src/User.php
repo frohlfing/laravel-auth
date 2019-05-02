@@ -119,6 +119,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $rules = [
         'name'       => 'required|max:255',
+        'username'   => 'required|max:255|unique:users,username,{id}',
         'email'      => 'required|email|max:255|unique:users,email,{id}',
         'password'   => 'required|min:#|max:255|confirmed', // the minimum length is set by getRules().
         'role'       => 'required|max:16',
@@ -221,11 +222,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $rules = $this->_getRules();
         $rules['password'] = str_replace('min:#', 'min:' . config('auth::password_length'), $rules['password']);
-
-        $key = config('auth.key');
-        if ($key !== 'email') {
-            $rules[$key] = 'required|max:255|unique:users,' . $key . ',{id}';
-        }
 
         return $rules;
     }

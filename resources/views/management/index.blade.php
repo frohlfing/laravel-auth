@@ -32,7 +32,7 @@
                                 @include('_search')
                             </div>
                             <div class="col-xs-4 col-sm-6 text-right">
-                                <a href="{{ route('admin.users.create') }}" class="btn btn-info" title="{{ __('.buttons.new') }}">
+                                <a href="{{ route('admin.users.create') }}" class="btn btn-info" title="{{ __('common.buttons.new') }}">
                                     <i class="fas fa-plus"></i>
                                 </a>
                             </div>
@@ -43,8 +43,8 @@
                                 <tr>
                                     <th>{!! sort_column('id', __('auth::model.id')) !!}</th>
                                     <th>{!! sort_column('name', __('auth::model.name')) !!}</th>
-                                    @if (config('auth.key') !== 'email')
-                                        <th>{!! sort_column('name', __('auth::model.' . config('auth.key'))) !!}</th>
+                                    @if (!config('auth.hide_username'))
+                                        <th>{!! sort_column('name', __('auth::model.username')) !!}</th>
                                     @endif
                                     <th>{!! sort_column('email', __('auth::model.email')) !!}</th>
                                     <th>{!! sort_column('role', __('auth::model.role')) !!}</th>
@@ -57,35 +57,35 @@
                                         <tr>
                                             <td>{{ $user->id }}</td>
                                             <td>{{ $user->name }}</td>
-                                            @if (config('auth.key') !== 'email')
-                                                <td>{{ $user->getAttribute(config('auth.key')) }}</td>
+                                            @if (!config('auth.hide_username'))
+                                                <td>{{ $user->username }}</td>
                                             @endif
                                             <td>
                                                 {{ $user->email }}
                                                 @if(!$user->hasVerifiedEmail())
                                                     <i class="fas fa-exclamation-circle not_confirmed-icon" title="{{ __('auth::management.index.email_not_verified') }}"></i>
-                                                    <a href="{{ route('admin.users.verify', [$user->id]) }}" data-method="PATCH" class="btn btn-link confirm-button">{{ __('auth::management.index.verified_button') }}</a>
+                                                    <a href="{{ route('admin.users.verify', [$user->id]) }}" data-method="PATCH" class="btn btn-link confirm-button">{{ __('auth::management.index.verify_button') }}</a>
                                                 @endif
                                             </td>
                                             <td>{{ $user->role }}</td>
                                             <td>{{ format_datetime($user->updated_at) }}</td>
                                             <td class="text-right text-nowrap">
-                                                <a href="{{ route('admin.users.show', [$user->id]) }}" class="btn btn-sm btn-info" title="{{ __('.show') }}">
+                                                <a href="{{ route('admin.users.show', [$user->id]) }}" class="btn btn-sm btn-info" title="{{ __('common.show') }}">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('admin.users.edit', [$user->id]) }}" class="btn btn-sm btn-info{{ is_superior($user) ? ' disabled' : '' }}" title="{{ __('.edit') }}">
+                                                <a href="{{ route('admin.users.edit', [$user->id]) }}" class="btn btn-sm btn-info{{ is_superior($user) ? ' disabled' : '' }}" title="{{ __('common.edit') }}">
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
-                                                <a href="{{ route('admin.users.replicate', [$user->id]) }}" class="btn btn-sm btn-info{{ is_superior($user) ? ' disabled' : '' }}" title="{{ __('.replicate') }}">
+                                                <a href="{{ route('admin.users.replicate', [$user->id]) }}" class="btn btn-sm btn-info{{ is_superior($user) ? ' disabled' : '' }}" title="{{ __('common.replicate') }}">
                                                     <i class="fas fa-clone"></i>
                                                 </a>
-                                                <a href="{{route('admin.users.destroy', array_merge([$user->id], request()->input())) }}" data-method="DELETE" data-confirm="{{ __('.confirm_deleting') }}" class="btn btn-sm btn-danger delete-button{{ is_superior($user) ? ' disabled' : '' }}" title="{{ __('.delete') }}">
+                                                <a href="{{route('admin.users.destroy', array_merge([$user->id], request()->input())) }}" data-method="DELETE" data-confirm="{{ __('common.confirm_deleting') }}" class="btn btn-sm btn-danger delete-button{{ is_superior($user) ? ' disabled' : '' }}" title="{{ __('common.delete') }}">
                                                     <i class="fas fa-trash-alt no-spinner"></i>
                                                 </a>
                                                 {{--<form method="POST" action="{{ route('admin.users.destroy', array_merge([$user->id], request()->input())) }}" accept-charset="UTF-8" style="display: inline-block;">--}}
                                                     {{--<input type="hidden" name="_method" value="DELETE"/>--}}
                                                     {{--@csrf--}}
-                                                    {{--<button type="submit" title="{{ __('.delete') }}" class="btn btn-sm btn-danger{{ is_superior($user) ? ' disabled' : '' }}" data-confirm="{{ __('.confirm_deleting') }}">--}}
+                                                    {{--<button type="submit" title="{{ __('common.delete') }}" class="btn btn-sm btn-danger{{ is_superior($user) ? ' disabled' : '' }}" data-confirm="{{ __('common.confirm_deleting') }}">--}}
                                                         {{--<i class="fas fa-trash-alt no-spinner"></i>--}}
                                                     {{--</button>--}}
                                                 {{--</form>--}}
@@ -95,7 +95,7 @@
                                     @if($users->isEmpty())
                                         <tr>
                                             <td colspan="100" class="no-hit text-center">
-                                                - {{ __('.no_entries_found') }} -
+                                                - {{ __('common.no_entries_found') }} -
                                             </td>
                                         </tr>
                                     @endif
