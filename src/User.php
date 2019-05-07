@@ -2,9 +2,10 @@
 
 namespace FRohlfing\Auth;
 
-use Carbon\Carbon;
+use App\Traits\SerializableISO8061;
 use App\Traits\AccessesRules;
 use App\Traits\Searchable;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\DatabaseNotification;
@@ -48,7 +49,7 @@ use Illuminate\Support\Facades\Mail;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, Searchable;
+    use Notifiable, Searchable, SerializableISO8061;
 
     use AccessesRules {
         getRules as protected _getRules;
@@ -221,7 +222,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRules()
     {
         $rules = $this->_getRules();
-        $rules['password'] = str_replace('min:#', 'min:' . config('auth::password_length'), $rules['password']);
+        $rules['password'] = str_replace('min:#', 'min:' . config('auth.password_length'), $rules['password']);
 
         return $rules;
     }
