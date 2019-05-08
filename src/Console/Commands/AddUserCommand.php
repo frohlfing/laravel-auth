@@ -99,7 +99,6 @@ class AddUserCommand extends Command
         $validator = Validator::make($input, User::rules(), [], __('auth::model'));
         if ($validator->fails()) {
             $this->error($validator->errors()->first());
-            dd(User::rules());
             return static::EXIT_FAILURE;
         }
 
