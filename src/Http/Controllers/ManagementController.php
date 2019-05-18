@@ -174,6 +174,7 @@ class ManagementController extends Controller
             $input['password'] = bcrypt($input['password']);
         }
 
+        $user->role = $input['role']; // attribute role is not mass fillable
         $user->update($input);
 
         return redirect('admin/users')->with('message', __('auth::management.form.successful_updated'));

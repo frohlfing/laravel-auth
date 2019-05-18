@@ -29,10 +29,10 @@
                         </div>
                         @if (!config('auth.hide_username'))
                             <div class="row">
-                                <div class="col-xs-12 col-sm-4 highlight">
+                                <div class="col-xs-12 col-sm-3 highlight">
                                     {{ __('auth::model.username') }}
                                 </div>
-                                <div class="col-xs-12 col-sm-8">
+                                <div class="col-xs-12 col-sm-9">
                                     {{ $user->username }}
                                 </div>
                             </div>

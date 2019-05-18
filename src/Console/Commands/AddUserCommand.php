@@ -40,7 +40,7 @@ class AddUserCommand extends Command
             { username : Username }
             { password : Password }
             { --d|name= : Display Name <comment>[default: <username>]</comment> }
-            { --m|email= : E-Mail Address <comment>[default: <username>@local]</comment> }
+            { --m|email= : E-Mail Address <comment>[default: <username>@local.site]</comment> }
             { --r|role=%1 : User role <comment>[%2]</comment> }
             { --t|api_token= : API token <comment>[default: a randomly generated unique string]</comment>) }
             { --l|rate_limit=%3 : Rate Limit }';
@@ -86,7 +86,7 @@ class AddUserCommand extends Command
         }
 
         if (empty($input['email'])) {
-            $input['email'] = str_slug(strtolower($input['username']), '_') . '@local';
+            $input['email'] = str_slug(strtolower($input['username']), '_') . '@local.site';
         }
 
         if (empty($input['api_token'])) {
