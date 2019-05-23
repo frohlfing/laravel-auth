@@ -53,7 +53,6 @@ class LoginController extends Controller
      * Get the failed login response instance.
      *
      * @param \Illuminate\Http\Request $request
-     * @throws ValidationException
      */
     protected function sendFailedLoginResponse(/** @noinspection PhpUnusedParameterInspection */ Request $request)
     {
@@ -66,7 +65,6 @@ class LoginController extends Controller
      * Redirect the user after determining they are locked out.
      *
      * @param \Illuminate\Http\Request $request
-     * @throws ValidationException
      */
     protected function sendLockoutResponse(Request $request)
     {

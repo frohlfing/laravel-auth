@@ -1,8 +1,6 @@
 <?php
 
 use App\User;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 
 if (!function_exists('user_name')) {
     /**

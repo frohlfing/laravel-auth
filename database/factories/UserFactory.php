@@ -14,6 +14,7 @@ use Faker\Generator as Faker;
 */
 
 /** @noinspection PhpUndefinedVariableInspection */
+/** @noinspection PhpUndefinedMethodInspection */
 $factory->define(App\User::class, function (Faker $faker) {
     $updatet_at = $faker->dateTime();
 
