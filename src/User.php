@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Mail;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
- * @method static create(array $attributes = [])
+ * @method static User create(array $attributes = [])
  * @method static Builder|User search($terms)
  * @method static truncate()
  * @method static Builder|User whereId($value)
