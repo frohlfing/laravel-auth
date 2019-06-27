@@ -31,8 +31,12 @@ use Illuminate\Support\Facades\Mail;
  * @property Carbon $updated_at
  * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @method static User create(array $attributes = [])
+ * @method static User find($id, $columns = ['*'])
+ * @method static Builder|User join($table, $first, $operator = null, $second = null, $type = 'inner', $where = false)
+ * @method static Builder|User orderBy($column, $direction = 'asc')
  * @method static Builder|User search($terms)
  * @method static truncate()
+ * @method static Builder|User where($column, $operator = null, $value = null, $boolean = 'and')
  * @method static Builder|User whereId($value)
  * @method static Builder|User whereName($value)
  * @method static Builder|User whereUsername($value)
@@ -45,7 +49,7 @@ use Illuminate\Support\Facades\Mail;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @mixin Builder // Strange! PhpStorm stops Auto Complete function if uncommented, but only in User Model! :-(
+ * @mixin Builder
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
