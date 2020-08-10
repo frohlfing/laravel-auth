@@ -106,6 +106,8 @@
                                         @endif
                                     </div>
                                 </div>
+                            @else
+                                <input name="rate_limit" value="{{$user->rate_limit}}" type="hidden"/>
                             @endif
                             @if(isset($user->id) && !$errors->has('password') && !$errors->has('password_confirmation'))
                                 <div class="panel" style="padding-bottom: 5px">
